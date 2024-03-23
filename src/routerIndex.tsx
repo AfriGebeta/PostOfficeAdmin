@@ -24,16 +24,16 @@ const RouterIndex = () => {
     if (localUser) {
       switch (localUser?.role) {
         case PostalUserRole.master:
-          navigator('dashboard')
+          navigator('/dashboard')
           break
         case PostalUserRole.Limd_yalew:
-          navigator('mail')
+          navigator('/mail')
           break
         case PostalUserRole.basic:
-          navigator('403')
+          navigator('/403')
           break
         default:
-          navigator('welcome')
+          navigator('/welcome')
       }
     } else {
       navigator('/sign-in')
