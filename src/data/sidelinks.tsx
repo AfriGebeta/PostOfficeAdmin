@@ -1,3 +1,4 @@
+import { PostalUserRole } from '@/hooks/authProvider'
 import {
   IconBarrierBlock,
   IconBoxSeam,
@@ -153,3 +154,85 @@ export const sidelinks: SideLink[] = [
     icon: <IconSettings size={18} />,
   },
 ]
+
+const adminSidelinks: SideLink[] = [
+  {
+    title: 'Dashboard',
+    label: '',
+    href: '/',
+    icon: <IconLayoutDashboard size={18} />,
+  },
+  {
+    title: 'Users',
+    label: '',
+    href: '/users',
+    icon: <IconUsers size={18} />,
+  },
+  {
+    title: 'Branches',
+    label: '',
+    href: '/branches',
+    icon: <IconHexagonNumber1 size={18} />,
+  },
+  {
+    title: 'Employees',
+    label: '',
+    href: '/employees',
+    icon: <IconHexagonNumber2 size={18} />,
+  },
+  {
+    title: 'Other E-Sevices',
+    label: '',
+    href: '/other-services',
+    icon: <IconHexagonNumber3 size={18} />,
+  }
+]
+
+const employeeSidelinks: SideLink[] = [
+  {
+    title: 'Mail',
+    label: '',
+    href: '/mail',
+    icon: <IconHexagonNumber3 size={18} />,
+  },
+  {
+    title: 'Tasks',
+    label: '',
+    href: '/tasks',
+    icon: <IconHexagonNumber4 size={18} />,
+  },
+  {
+    title: 'Users',
+    label: '',
+    href: '/users',
+    icon: <IconUsers size={18} />,
+  },
+  {
+    title: 'Other E-Sevices',
+    label: '',
+    href: '/other-services',
+    icon: <IconHexagonNumber1 size={18} />,
+  }
+]
+
+const userSidelinks: SideLink[] = [
+  {
+    title: 'Dashbaord',
+    label: '',
+    href: '/403',
+    icon: <IconLayoutDashboard size={18} />,
+  },
+]
+
+export const getSideLinks = (role: string | undefined) => {
+  switch (role) {
+    case PostalUserRole.master:
+      return adminSidelinks
+    case PostalUserRole.Limd_yalew:
+      return employeeSidelinks
+      case PostalUserRole.basic || undefined:
+      return userSidelinks
+    default:
+      return sidelinks
+  }
+}

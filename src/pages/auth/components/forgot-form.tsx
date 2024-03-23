@@ -17,10 +17,9 @@ import { Input } from '@/components/ui/input'
 interface ForgotFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 const formSchema = z.object({
-  email: z
+  phone: z
     .string()
-    .min(1, { message: 'Please enter your email' })
-    .email({ message: 'Invalid email address' }),
+    .min(1, { message: 'Please enter your phone' }).min(9, { message: 'Phone number is not valid' }).max(9, { message: 'Phone number is not valid' }),
 })
 
 export function ForgotForm({ className, ...props }: ForgotFormProps) {
@@ -28,7 +27,7 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: '' },
+    defaultValues: { phone: '' },
   })
 
   function onSubmit(data: z.infer<typeof formSchema>) {
@@ -45,14 +44,16 @@ export function ForgotForm({ className, ...props }: ForgotFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid gap-2'>
-            <FormField
+          <FormField
               control={form.control}
-              name='email'
+              name='phone'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input placeholder='name@example.com' {...field} />
+                    <div className='flex items-center'>
+                      <p className='text-sm text-gray-400 p-2'>+251</p> <Input placeholder='- - -  - -  - -  - -' {...field} />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

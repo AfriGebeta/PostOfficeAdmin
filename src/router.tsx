@@ -12,12 +12,6 @@ const router = createBrowserRouter([
     }),
   },
   {
-    path: '/sign-in-2',
-    lazy: async () => ({
-      Component: (await import('./pages/auth/sign-in-2')).default,
-    }),
-  },
-  {
     path: '/sign-up',
     lazy: async () => ({
       Component: (await import('./pages/auth/sign-up')).default,
@@ -41,6 +35,35 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        lazy: async () => ({
+          Component: (await import('./routerIndex')).default,
+        }),
+      },
+      {
+        path: '403',
+        lazy: async () => ({
+          Component: (await import('./pages/errors/unauthorized')).default,
+        }),
+      },
+      {
+        path: 'welcome',
+        lazy: async () => ({
+          Component: (await import('./pages/welcome')).default,
+        }),
+      },
+      /*
+      Lmd yalew
+      */
+      {
+        path: 'mail',
+        lazy: async () => ({
+          Component: (await import('./pages/mail')).default,
+        }),
+      },
+      /* master
+       */
+      {
+        path: 'dashboard',
         lazy: async () => ({
           Component: (await import('./pages/dashboard')).default,
         }),
@@ -75,6 +98,7 @@ const router = createBrowserRouter([
           Component: (await import('@/pages/extra-components')).default,
         }),
       },
+
       {
         path: 'settings',
         lazy: async () => ({

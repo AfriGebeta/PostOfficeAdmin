@@ -1,5 +1,5 @@
 import { UserAuthForm } from './components/user-auth-form'
-import ViteLogo from '@/assets/vite.svg'
+import postOfficeLogo from "../../assets/post_logo.png";
 
 export default function SignIn() {
   return (
@@ -8,37 +8,37 @@ export default function SignIn() {
         <div className='relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex'>
           <div className='absolute inset-0 bg-zinc-900' />
           <div className='relative z-20 flex items-center text-lg font-medium'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              className='mr-2 h-6 w-6'
-            >
-              <path d='M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3' />
-            </svg>
-            Shadcn Admin
+          <img
+              src={postOfficeLogo}
+              alt='VirtualPO Admin'
+              className='w-16 h-16 mr-2'
+              style={{ borderRadius: '50%'}}
+            />
+            <div className='flex flex-col p-2'>
+              <p> EthioPost</p>
+              <p>
+              Virtual <span style={{
+              color: "#FFA818"
+            }}> {` PO`}</span>box
+              </p>
+            </div>
           </div>
 
           <img
-            src={ViteLogo}
+            src={postOfficeLogo}
             className='relative m-auto'
             width={301}
             height={60}
-            alt='Vite'
+            alt='post'
+            style={{ borderRadius: '50%'}}
           />
 
           <div className='relative z-20 mt-auto'>
             <blockquote className='space-y-2'>
-              <p className='text-lg'>
-                &ldquo;This library has saved me countless hours of work and
-                helped me deliver stunning designs to my clients faster than
-                ever before.&rdquo;
+              <p className='font-bold text-xl'>
+                Post for everyone!
               </p>
-              <footer className='text-sm'>Sofia Davis</footer>
+              {/* <footer className='text-sm'>Sofia Davis</footer> */}
             </blockquote>
           </div>
         </div>
@@ -47,7 +47,7 @@ export default function SignIn() {
             <div className='flex flex-col space-y-2 text-left'>
               <h1 className='text-2xl font-semibold tracking-tight'>Login</h1>
               <p className='text-sm text-muted-foreground'>
-                Enter your email and password below <br />
+                Enter your phone number and password below <br />
                 to log into your account
               </p>
             </div>

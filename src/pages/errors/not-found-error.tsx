@@ -1,9 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/custom/button'
+import { Layout } from '@/components/custom/layout'
 
 export default function NotFoundError() {
   const navigate = useNavigate()
   return (
+    <Layout>
+
     <div className='h-svh'>
       <div className='m-auto flex h-full w-full flex-col items-center justify-center gap-2'>
         <h1 className='text-[7rem] font-bold leading-tight'>404</h1>
@@ -20,5 +23,6 @@ export default function NotFoundError() {
         </div>
       </div>
     </div>
+    </Layout>
   )
 }
