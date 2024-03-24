@@ -73,8 +73,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       dummyUser = { phone, firstName: "John", lastName: "Doe", role: PostalUserRole.owner } 
     } else if (phone === '912345679' && password === 'employee') {
       dummyUser = { phone, firstName: "Jane", lastName: "Doe", role: PostalUserRole.Limd_yalew } 
-    } else {
+    } else if (phone === '912345670' && password === 'basic') {
       dummyUser = { phone, firstName: "Jill", lastName: "Doe", role: PostalUserRole.basic }
+    } else {
+      return Promise.reject('Invalid credentials');
     }
 
     capitalizeNames(dummyUser);
