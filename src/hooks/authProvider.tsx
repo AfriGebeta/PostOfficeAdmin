@@ -69,9 +69,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // login request logic here
     // for now its a dummy request
     let dummyUser;
-    if(phone === '912345678' && password === 'password') {
+    if(phone === '912345678' && password === 'admin') {
       dummyUser = { phone, firstName: "John", lastName: "Doe", role: PostalUserRole.owner } 
-    } else if (phone === '912345679' && password === 'password') {
+    } else if (phone === '912345679' && password === 'employee') {
       dummyUser = { phone, firstName: "Jane", lastName: "Doe", role: PostalUserRole.Limd_yalew } 
     } else {
       dummyUser = { phone, firstName: "Jill", lastName: "Doe", role: PostalUserRole.basic }
