@@ -69,11 +69,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // login request logic here
     // for now its a dummy request
     let dummyUser;
-    if(phone === '912345678' && password === 'admin') {
+    if(phone === '920731140' && password === 'admin') {
       dummyUser = { phone, firstName: "John", lastName: "Doe", role: PostalUserRole.owner } 
-    } else if (phone === '912345679' && password === 'employee') {
+    } else if (phone === '912345678' && password === 'employee') {
       dummyUser = { phone, firstName: "Jane", lastName: "Doe", role: PostalUserRole.Limd_yalew } 
-    } else if (phone === '912345670' && password === 'basic') {
+    } else if (phone === '912345679' && password === 'basic') {
       dummyUser = { phone, firstName: "Jill", lastName: "Doe", role: PostalUserRole.basic }
     } else {
       return Promise.reject('Invalid credentials');
