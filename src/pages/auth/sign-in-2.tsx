@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { UserAuthForm } from './components/user-auth-form'
-import postOfficeLogo from "../../assets/ethio_post_logo.svg";
+import postOfficeLogo from '../../assets/ethio_post_logo.svg'
 
 export default function SignIn2() {
   return (
@@ -10,10 +10,10 @@ export default function SignIn2() {
           <div className='mb-4 flex items-center justify-center'>
             <img
               src={postOfficeLogo}
-              alt='VirtualPO Admin'
-              className='w-8 h-8 mr-2'
+              alt='VirtualPo'
+              className='mr-2 h-8 w-8'
             />
-            <h1 className='text-xl font-medium'>VirtualPO Admin</h1>
+            <h1 className='text-xl font-medium'>VirtualPo</h1>
           </div>
           <Card className='p-6'>
             <div className='flex flex-col space-y-2 text-left'>

@@ -6,7 +6,7 @@ import Nav from './nav'
 import { cn } from '@/lib/utils'
 import { getSideLinks, sidelinks } from '@/data/sidelinks'
 import { useAuth } from '@/hooks/authProvider'
-import postOfficeLogo from "../assets/post_logo.png";
+import postOfficeLogo from '../assets/post_logo.png'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   isCollapsed: boolean
@@ -45,32 +45,34 @@ export default function Sidebar2({
 
       <Layout>
         {/* Header */}
-        <LayoutHeader className={`sticky top-0 justify-center px-4 py-3 shadow md:px-4 p-0 md:p-0 ${isCollapsed ? '' : `justify-between`}`}>
+        <LayoutHeader
+          className={`sticky top-0 justify-center p-0 px-4 py-3 shadow md:p-0 md:px-4 ${isCollapsed ? '' : `justify-between`}`}
+        >
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
-          <img
-                  src={postOfficeLogo}
-                  alt='VirtualPO Admin'
-                  className={isCollapsed? ' h-8 w-8' : 'h-16 w-16'}
-                  style={{ borderRadius: '50%' }}
-                />
+            <img
+              src={postOfficeLogo}
+              alt='VirtualPo'
+              className={isCollapsed ? ' h-8 w-8' : 'h-16 w-16'}
+              style={{ borderRadius: '50%' }}
+            />
             <div
               className={`flex flex-col justify-end truncate ${isCollapsed ? 'invisible w-0' : 'visible w-auto'}`}
             >
               <div className='flex flex-col p-2'>
-                  <p> EthioPost</p>
-                  <p>
-                    Virtual{' '}
-                    <span
-                      style={{
-                        color: '#FFA818',
-                      }}
-                    >
-                      {' '}
-                      {` PO`}
-                    </span>
-                    box
-                  </p>
-                </div>
+                <p> EthioPost</p>
+                <p>
+                  Virtual{' '}
+                  <span
+                    style={{
+                      color: '#FFA818',
+                    }}
+                  >
+                    {' '}
+                    {` PO`}
+                  </span>
+                  box
+                </p>
+              </div>
             </div>
           </div>
           {/* Toggle Button in mobile */}

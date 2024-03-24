@@ -1,5 +1,5 @@
 import { UserAuthForm } from './components/user-auth-form'
-import postOfficeLogo from "../../assets/post_logo.png";
+import postOfficeLogo from '../../assets/post_logo.png'
 
 export default function SignIn() {
   return (
@@ -8,18 +8,25 @@ export default function SignIn() {
         <div className='relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex'>
           <div className='absolute inset-0 bg-zinc-900' />
           <div className='relative z-20 flex items-center text-lg font-medium'>
-          <img
+            <img
               src={postOfficeLogo}
-              alt='VirtualPO Admin'
-              className='w-16 h-16 mr-2'
-              style={{ borderRadius: '50%'}}
+              alt='VirtualPo'
+              className='mr-2 h-16 w-16'
+              style={{ borderRadius: '50%' }}
             />
             <div className='flex flex-col p-2'>
               <p> EthioPost</p>
               <p>
-              Virtual <span style={{
-              color: "#FFA818"
-            }}> {` PO`}</span>box
+                Virtual{' '}
+                <span
+                  style={{
+                    color: '#FFA818',
+                  }}
+                >
+                  {' '}
+                  {` PO`}
+                </span>
+                box
               </p>
             </div>
           </div>
@@ -30,14 +37,12 @@ export default function SignIn() {
             width={301}
             height={60}
             alt='post'
-            style={{ borderRadius: '50%'}}
+            style={{ borderRadius: '50%' }}
           />
 
           <div className='relative z-20 mt-auto'>
             <blockquote className='space-y-2'>
-              <p className='font-bold text-xl'>
-                Post for everyone!
-              </p>
+              <p className='text-xl font-bold'>Post for everyone!</p>
               {/* <footer className='text-sm'>Sofia Davis</footer> */}
             </blockquote>
           </div>
@@ -52,6 +57,16 @@ export default function SignIn() {
               </p>
             </div>
             <UserAuthForm />
+            <p className='px-8 text-center text-sm text-muted-foreground'>
+              No account yet?{' '}
+              <a
+                href='/sign-up'
+                className='underline underline-offset-4 hover:text-primary'
+              >
+                Sign up
+              </a>
+              .
+            </p>
             <p className='px-8 text-center text-sm text-muted-foreground'>
               By clicking login, you agree to our{' '}
               <a

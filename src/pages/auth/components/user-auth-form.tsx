@@ -25,7 +25,9 @@ interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 const formSchema = z.object({
   phone: z
     .string()
-    .min(1, { message: 'Please enter your phone' }).min(9, { message: 'Phone number is not valid' }).max(9, { message: 'Phone number is not valid' }),
+    .min(1, { message: 'Please enter your phone' })
+    .min(9, { message: 'Phone number is not valid' })
+    .max(9, { message: 'Phone number is not valid' }),
   password: z
     .string()
     .min(1, {
@@ -38,7 +40,7 @@ const formSchema = z.object({
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
-  const { login } = useAuth();
+  const { login } = useAuth()
   const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -56,20 +58,23 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setTimeout(() => {
       setIsLoading(false)
       // handle login
-      login(data.phone, data.password).then((user) => {
-        console.log('Logged in')
-        toast({
-          title: 'Logged in successfully!',
-          description: 'You have successfully logged in to your account.',
+      login(data.phone, data.password)
+        .then((user) => {
+          console.log('Logged in')
+          toast({
+            title: 'Logged in successfully!',
+            description: 'You have successfully logged in to your account.',
+          })
+          navigate('/')
         })
-        navigate('/')
-      }).catch(e => {
-        console.error('Failed to login:', e)
-        toast({
-          title: 'Failed to login!',
-          description: 'Please check your phone number and password and try again.',
+        .catch((e) => {
+          console.error('Failed to login:', e)
+          toast({
+            title: 'Failed to login!',
+            description:
+              'Please check your phone number and password and try again.',
+          })
         })
-      })
     }, 3000)
   }
 
@@ -86,7 +91,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
                     <div className='flex items-center'>
-                      <p className='text-sm text-gray-400 p-2'>+251</p> <Input placeholder='- - -  - -  - -  - -' {...field} />
+                      <p className='p-2 text-sm text-gray-400'>+251</p>{' '}
+                      <Input placeholder='- - -  - -  - -  - -' {...field} />
                     </div>
                   </FormControl>
                   <FormMessage />

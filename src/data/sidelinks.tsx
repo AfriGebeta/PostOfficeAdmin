@@ -40,13 +40,19 @@ export const sidelinks: SideLink[] = [
     icon: <IconLayoutDashboard size={18} />,
   },
   {
-    title: 'Tasks',
+    title: 'Sent package',
     label: '3',
     href: '/tasks',
     icon: <IconChecklist size={18} />,
   },
   {
-    title: 'Chats',
+    title: 'Incoming package',
+    label: '3',
+    href: '/tasks',
+    icon: <IconChecklist size={18} />,
+  },
+  {
+    title: 'package history',
     label: '9',
     href: '/chats',
     icon: <IconMessages size={18} />,
@@ -185,7 +191,7 @@ const adminSidelinks: SideLink[] = [
     label: '',
     href: '/other-services',
     icon: <IconHexagonNumber3 size={18} />,
-  }
+  },
 ]
 
 const employeeSidelinks: SideLink[] = [
@@ -212,7 +218,7 @@ const employeeSidelinks: SideLink[] = [
     label: '',
     href: '/other-services',
     icon: <IconHexagonNumber1 size={18} />,
-  }
+  },
 ]
 
 const userSidelinks: SideLink[] = [
@@ -224,15 +230,56 @@ const userSidelinks: SideLink[] = [
   },
 ]
 
+const customerSideLinks: SideLink[] = [
+  {
+    title: 'Dashboard',
+    label: '',
+    href: '/',
+    icon: <IconLayoutDashboard size={18} />,
+  },
+  {
+    title: 'Sent package',
+    label: '3',
+    href: '/tasks',
+    icon: <IconChecklist size={18} />,
+  },
+  {
+    title: 'Incoming package',
+    label: '3',
+    href: '/tasks',
+    icon: <IconChecklist size={18} />,
+  },
+  {
+    title: 'package history',
+    label: '9',
+    href: '/tasks',
+    icon: <IconMessages size={18} />,
+  },
+
+  {
+    title: 'send',
+    label: '9',
+    href: '/mail',
+    icon: <IconMessages size={18} />,
+  },
+  {
+    title: 'Settings',
+    label: '',
+    href: '/settings',
+    icon: <IconSettings size={18} />,
+  },
+]
+
 export const getSideLinks = (role: string | undefined) => {
-  switch (role) {
-    case PostalUserRole.master:
-      return adminSidelinks
-    case PostalUserRole.Limd_yalew:
-      return employeeSidelinks
-      case PostalUserRole.basic || undefined:
-      return userSidelinks
-    default:
-      return sidelinks
-  }
+  // switch (role) {
+  //   case PostalUserRole.master:
+  //     return adminSidelinks
+  //   case PostalUserRole.Limd_yalew:
+  //     return employeeSidelinks
+  //   case PostalUserRole.basic || undefined:
+  //     return userSidelinks
+  //   default:
+  //     return customerSideLinks
+  // }
+  return customerSideLinks
 }

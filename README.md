@@ -1,4 +1,4 @@
-# VirtualPO Admin Dashboard
+# VirtualPo Dashboard
 
 ## Tech Stack
 
@@ -13,4 +13,3 @@
 **Linting/Formatting:** [Eslint](https://eslint.org/) & [Prettier](https://prettier.io/)
 
 **Icons:** [Tabler Icons](https://tabler.io/icons)
-

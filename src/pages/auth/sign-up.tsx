@@ -20,7 +20,7 @@ export default function SignUp() {
             >
               <path d='M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3' />
             </svg>
-            <h1 className='text-xl font-medium'>VirtualPO Admin</h1>
+            <h1 className='text-xl font-medium'>VirtualPo</h1>
           </div>
           <Card className='p-6'>
             <div className='mb-2 flex flex-col space-y-2 text-left'>
@@ -39,6 +39,17 @@ export default function SignUp() {
               </p>
             </div>
             <SignUpForm />
+
+            <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
+              Already have an account?{' '}
+              <a
+                href='/sign-in'
+                className='underline underline-offset-4 hover:text-primary'
+              >
+                Log in
+              </a>
+              .
+            </p>
             <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
               By creating an account, you agree to our{' '}
               <a
