@@ -65,9 +65,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [user])
 
   // Simulate login
-  const login = (phone: string) => {
+  const login = (phone: string, password: string) => {
     // login request logic here
-    const dummyUser = { phone, firstName: "dummy", lastName: "thicc", role: PostalUserRole.owner };
+    // for now its a dummy request
+    let dummyUser;
+    if(phone === '0912345678' && password === 'password') {
+      dummyUser = { phone, firstName: "John", lastName: "Doe", role: PostalUserRole.owner } 
+    } else if (phone === '0912345679' && password === 'password') {
+      dummyUser = { phone, firstName: "Jane", lastName: "Doe", role: PostalUserRole.Limd_yalew } 
+    } else {
+      dummyUser = { phone, firstName: "Jill", lastName: "Doe", role: PostalUserRole.basic }
+    }
+
     capitalizeNames(dummyUser);
     setPostalUser(dummyUser);
     //set localStorage
