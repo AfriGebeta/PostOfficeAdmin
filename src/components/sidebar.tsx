@@ -4,7 +4,7 @@ import { Layout, LayoutHeader } from './custom/layout'
 import { Button } from './custom/button'
 import Nav from './nav'
 import { cn } from '@/lib/utils'
-import { getSideLinks, sidelinks } from '@/data/sidelinks'
+import { getSideLinks } from '@/data/sidelinks'
 import { useAuth } from '@/hooks/authProvider'
 import postOfficeLogo from "../assets/post_logo.png";
 

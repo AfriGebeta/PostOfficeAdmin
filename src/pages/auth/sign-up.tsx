@@ -3,6 +3,9 @@ import { SignUpForm } from './components/sign-up-form'
 import { Link } from 'react-router-dom'
 
 export default function SignUp() {
+  const submitCallback = () => {
+    console.log('Account created')
+  }
   return (
     <>
       <div className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
@@ -38,7 +41,7 @@ export default function SignUp() {
                 </Link>
               </p>
             </div>
-            <SignUpForm />
+            <SignUpForm onSubmitCallback={submitCallback}/>
             <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
               By creating an account, you agree to our{' '}
               <a

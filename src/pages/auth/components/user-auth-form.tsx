@@ -57,7 +57,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setTimeout(() => {
       setIsLoading(false)
       // handle login
-      login(data.phone, data.password).then((user) => {
+      login(data.phone, data.password).then(() => {
         console.log('Logged in')
         toast({
           title: 'Logged in successfully!',

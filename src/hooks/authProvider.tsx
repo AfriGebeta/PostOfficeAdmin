@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [user])
 
   // Simulate login
-  const login = (phone: string, password: string) => {
+  const login = (phone: string) => {
     // login request logic here
     const dummyUser = { phone, firstName: "dummy", lastName: "thicc", role: PostalUserRole.owner };
     capitalizeNames(dummyUser);

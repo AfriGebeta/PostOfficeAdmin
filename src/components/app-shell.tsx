@@ -3,13 +3,10 @@ import Sidebar from './sidebar'
 import useIsCollapsed from '@/hooks/use-is-collapsed'
 import { useAuth } from '@/hooks/authProvider'
 import { useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
 
 export default function AppShell() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   const { user } = useAuth()
-
-  const navigate = useNavigate()
 
   useEffect(() => {
     console.log('User:', user, "useEffect triggered")

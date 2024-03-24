@@ -1,11 +1,8 @@
 import { ColumnDef } from '@tanstack/react-table'
 
-import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from './data-table-column-header'
 
-import { Button } from '@/components/custom/button'
-import { toast } from '@/components/ui/use-toast'
 import { PostalUser } from '@/hooks/authProvider'
 
 export const columns: ColumnDef<PostalUser>[] = [

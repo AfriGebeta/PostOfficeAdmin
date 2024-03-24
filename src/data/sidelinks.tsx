@@ -13,7 +13,6 @@ import {
   IconHexagonNumber3,
   IconHexagonNumber4,
   IconLayoutDashboard,
-  IconLocation,
   IconLocationBolt,
   IconMail,
   IconMessages,
