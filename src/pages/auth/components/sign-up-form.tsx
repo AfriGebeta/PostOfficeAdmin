@@ -16,21 +16,22 @@ import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
 
-interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {}
+interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {
+  onSubmitCallback: (data: z.infer<typeof formSchema>) => void
+}
 
 const formSchema = z
   .object({
-    email: z
-      .string()
-      .min(1, { message: 'Please enter your email' })
-      .email({ message: 'Invalid email address' }),
+    phone: z
+    .string()
+    .min(1, { message: 'Please enter your phone' }).min(9, { message: 'Phone number is not valid' }).max(9, { message: 'Phone number is not valid' }),
     password: z
       .string()
       .min(1, {
         message: 'Please enter your password',
       })
-      .min(7, {
-        message: 'Password must be at least 7 characters long',
+      .min(3, {
+        message: 'Password must be at least 3 characters long',
       }),
     confirmPassword: z.string(),
   })
@@ -45,7 +46,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      phone: '',
       password: '',
       confirmPassword: '',
     },
@@ -57,6 +58,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
 
     setTimeout(() => {
       setIsLoading(false)
+      props.onSubmitCallback(data)
     }, 3000)
   }
 
@@ -67,12 +69,14 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
           <div className='grid gap-2'>
             <FormField
               control={form.control}
-              name='email'
+              name='phone'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input placeholder='name@example.com' {...field} />
+                    <div className='flex items-center'>
+                      <p className='text-sm text-gray-400 p-2'>+251</p> <Input placeholder='- - -  - -  - -  - -' {...field} />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -108,7 +112,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               Create Account
             </Button>
 
-            <div className='relative my-2'>
+            {/* <div className='relative my-2'>
               <div className='absolute inset-0 flex items-center'>
                 <span className='w-full border-t' />
               </div>
@@ -117,9 +121,9 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                   Or continue with
                 </span>
               </div>
-            </div>
+            </div> */}
 
-            <div className='flex items-center gap-2'>
+            {/* <div className='flex items-center gap-2'>
               <Button
                 variant='outline'
                 className='w-full'
@@ -138,7 +142,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               >
                 Facebook
               </Button>
-            </div>
+            </div> */}
           </div>
         </form>
       </Form>

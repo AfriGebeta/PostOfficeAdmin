@@ -4,13 +4,12 @@ import { UserNav } from '@/components/user-nav'
 import { Layout, LayoutBody, LayoutHeader } from '@/components/custom/layout'
 import { DataTable } from './components/data-table'
 import { columns } from './components/columns'
-import { tasks } from './data/tasks'
-import { useAuth } from '@/hooks/authProvider'
+import { users } from './data/tasks'
+import { PostalUserRole, useAuth } from '@/hooks/authProvider'
 
-export default function Tasks() {
+export default function Employees() {
   const { user } = useAuth()
-
-  const availableTasks = tasks.filter((task) => (task.status === 'waiting' || task.status === 'en-route') || task.driverAssigned === undefined)
+  const validUsers = users.filter((user) => user.role === PostalUserRole.master || user.role === PostalUserRole.Limd_yalew)
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -27,12 +26,12 @@ export default function Tasks() {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Welcome back! {user?.firstName}</h2>
             <p className='text-muted-foreground'>
-              Here&apos;s a list of actions that have to be done.
+              Here&apos;s a list of of all the mail in the system.
             </p>
           </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-          <DataTable data={availableTasks} columns={columns} />
+          <DataTable data={validUsers} columns={columns} />
         </div>
       </LayoutBody>
     </Layout>

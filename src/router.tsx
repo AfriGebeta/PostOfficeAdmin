@@ -75,6 +75,12 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: 'employees',
+        lazy: async () => ({
+          Component: (await import('./pages/employees')).default,
+        }),
+      },
+      {
         path: 'chats',
         lazy: async () => ({
           Component: (await import('@/components/coming-soon')).default,
@@ -82,6 +88,18 @@ const router = createBrowserRouter([
       },
       {
         path: 'users',
+        lazy: async () => ({
+          Component: (await import('@/components/coming-soon')).default,
+        }),
+      },
+      {
+        path: 'other-services',
+        lazy: async () => ({
+          Component: (await import('@/pages/eservices')).default,
+        }),
+      },
+      {
+        path: 'branches',
         lazy: async () => ({
           Component: (await import('@/components/coming-soon')).default,
         }),

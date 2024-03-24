@@ -45,7 +45,7 @@ export default function Sidebar2({
 
       <Layout>
         {/* Header */}
-        <LayoutHeader className={`sticky top-0 justify-center px-4 py-3 shadow md:px-4 p-0 md:p-0 ${isCollapsed ? '' : `justify-between`}`}>
+        <LayoutHeader className={`sticky top-0 justify-between md:justify-center shadow p-2 md:p-4 py-16 md:py-16 ${isCollapsed ? 'p-2 md:p-2' : ``}`}>
           <div className={`flex items-center ${!isCollapsed ? 'gap-2' : ''}`}>
           <img
                   src={postOfficeLogo}
@@ -66,9 +66,9 @@ export default function Sidebar2({
                       }}
                     >
                       {' '}
-                      {` PO`}
+                      {` PO `}
                     </span>
-                    box
+                    Box
                   </p>
                 </div>
             </div>

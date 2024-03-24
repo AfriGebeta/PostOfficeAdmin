@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 // Define PostalUserRoles
 // type PostalUserRole = 'basic' | 'lemaj' | 'Limd yalew' | 'master' | 'owner';
@@ -13,7 +13,7 @@ export enum PostalUserRole {
 // Define user type
 export interface PostalUser {
   phone: string;
-  firstName: String;
+  firstName: string;
   lastName: String;
   role: PostalUserRole;
 }
@@ -34,7 +34,7 @@ const initialPostalUserState: PostalUser | null = null;
 const AuthContext = createContext<AuthContextType>({
   user: initialPostalUserState,
   setUser: () => {},
-  login: (phone: string, password: string) => new Promise(() => {}),
+  login: () => new Promise(() => {}),
   logout: () => new Promise(() => {}),
   hasPostalUserRole: () => false,
 });
@@ -49,11 +49,26 @@ interface AuthProviderProps {
 // AuthProvider component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setPostalUser] = useState<PostalUser | null>(initialPostalUserState);
+  useEffect(() => {
+    let localUser
+    if (user) {
+      localUser = user
+    } else {
+      const result = localStorage.getItem('user')
+      if (result) {
+        localUser = JSON.parse(result)
+        console.log('Local user:', localUser)
+        setUser(localUser)
+      }
+    }
+  
+  }, [user])
 
   // Simulate login
   const login = (phone: string, password: string) => {
     // login request logic here
-    const dummyUser = { phone, firstName: "dummy", lastName: "thicc", role: PostalUserRole.master };
+    const dummyUser = { phone, firstName: "dummy", lastName: "thicc", role: PostalUserRole.owner };
+    capitalizeNames(dummyUser);
     setPostalUser(dummyUser);
     //set localStorage
     localStorage.setItem('user', JSON.stringify(dummyUser));
@@ -77,6 +92,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // update the user
   const setUser = (PostalUser: PostalUser) => {
     setPostalUser(PostalUser);
+  };
+
+  // capitalize the first letter of the name
+  const capitalizeNames = (user: PostalUser) => {
+    user.firstName = user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1);
+    user.lastName = user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1);
   };
 
   return (

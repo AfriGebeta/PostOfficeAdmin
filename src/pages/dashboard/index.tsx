@@ -14,15 +14,16 @@ import { UserNav } from '@/components/user-nav'
 import { Layout, LayoutBody, LayoutHeader } from '@/components/custom/layout'
 import { RecentSales } from './components/recent-sales'
 import { Overview } from './components/overview'
+import ComingSoon from '@/components/coming-soon'
 
 export default function Dashboard() {
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
       <LayoutHeader>
-        <TopNav links={topNav} />
+        {/* <TopNav links={topNav} /> */}
+        <Search />
         <div className='ml-auto flex items-center space-x-4'>
-          <Search />
           <ThemeSwitch />
           <UserNav />
         </div>
@@ -43,7 +44,7 @@ export default function Dashboard() {
           defaultValue='overview'
           className='space-y-4'
         >
-          <div className='w-full overflow-x-scroll pb-2'>
+          <div className='w-full overflow-x-auto pb-2'>
             <TabsList>
               <TabsTrigger value='overview'>Overview</TabsTrigger>
               <TabsTrigger value='analytics'>Analytics</TabsTrigger>
@@ -177,31 +178,40 @@ export default function Dashboard() {
               </Card>
             </div>
           </TabsContent>
+          <TabsContent value='analytics' className='space-y-4'>
+            <ComingSoon />
+          </TabsContent>
+          <TabsContent value='reports' className='space-y-4'>
+            <ComingSoon />
+          </TabsContent>
+          <TabsContent value='notifications' className='space-y-4'>
+            <ComingSoon />
+          </TabsContent>
         </Tabs>
       </LayoutBody>
     </Layout>
   )
 }
 
-const topNav = [
-  {
-    title: 'Overview',
-    href: 'dashboard/overview',
-    isActive: true,
-  },
-  {
-    title: 'Customers',
-    href: 'dashboard/customers',
-    isActive: false,
-  },
-  {
-    title: 'Products',
-    href: 'dashboard/products',
-    isActive: false,
-  },
-  {
-    title: 'Settings',
-    href: 'dashboard/settings',
-    isActive: false,
-  },
-]
+// const topNav = [
+//   {
+//     title: 'Overview',
+//     href: 'overview',
+//     isActive: true,
+//   },
+//   {
+//     title: 'Customers',
+//     href: 'customers',
+//     isActive: false,
+//   },
+//   {
+//     title: 'Products',
+//     href: 'products',
+//     isActive: false,
+//   },
+//   {
+//     title: 'Settings',
+//     href: 'settings',
+//     isActive: false,
+//   },
+// ]

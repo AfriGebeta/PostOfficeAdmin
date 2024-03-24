@@ -7,16 +7,21 @@ import {
   IconComponents,
   IconError404,
   IconExclamationCircle,
+  IconHexagon,
   IconHexagonNumber1,
   IconHexagonNumber2,
   IconHexagonNumber3,
   IconHexagonNumber4,
   IconLayoutDashboard,
+  IconLocation,
+  IconLocationBolt,
+  IconMail,
   IconMessages,
   IconRouteAltLeft,
   IconServerOff,
   IconSettings,
   IconTruck,
+  IconUser,
   IconUserShield,
   IconUsers,
 } from '@tabler/icons-react'
@@ -163,6 +168,24 @@ const adminSidelinks: SideLink[] = [
     icon: <IconLayoutDashboard size={18} />,
   },
   {
+    title: 'Employees',
+    label: '',
+    href: '/employees',
+    icon: <IconUser size={18} />,
+  },
+  {
+    title: 'Mail',
+    label: '',
+    href: '/mail',
+    icon: <IconMail size={18} />,
+  },
+  {
+    title: 'Tasks',
+    label: '',
+    href: '/tasks',
+    icon: <IconChecklist size={18} />,
+  },
+  {
     title: 'Users',
     label: '',
     href: '/users',
@@ -172,20 +195,20 @@ const adminSidelinks: SideLink[] = [
     title: 'Branches',
     label: '',
     href: '/branches',
-    icon: <IconHexagonNumber1 size={18} />,
-  },
-  {
-    title: 'Employees',
-    label: '',
-    href: '/employees',
-    icon: <IconHexagonNumber2 size={18} />,
+    icon: <IconLocationBolt size={18} />,
   },
   {
     title: 'Other E-Sevices',
     label: '',
     href: '/other-services',
-    icon: <IconHexagonNumber3 size={18} />,
-  }
+    icon: <IconHexagon size={18} />,
+  },
+  {
+    title: 'Settings',
+    label: '',
+    href: '/settings',
+    icon: <IconSettings size={18} />,
+  },
 ]
 
 const employeeSidelinks: SideLink[] = [
@@ -193,13 +216,13 @@ const employeeSidelinks: SideLink[] = [
     title: 'Mail',
     label: '',
     href: '/mail',
-    icon: <IconHexagonNumber3 size={18} />,
+    icon: <IconMail size={18} />,
   },
   {
     title: 'Tasks',
     label: '',
     href: '/tasks',
-    icon: <IconHexagonNumber4 size={18} />,
+    icon: <IconChecklist size={18} />,
   },
   {
     title: 'Users',
@@ -211,8 +234,8 @@ const employeeSidelinks: SideLink[] = [
     title: 'Other E-Sevices',
     label: '',
     href: '/other-services',
-    icon: <IconHexagonNumber1 size={18} />,
-  }
+    icon: <IconHexagon size={18} />,
+  },
 ]
 
 const userSidelinks: SideLink[] = [
@@ -226,13 +249,15 @@ const userSidelinks: SideLink[] = [
 
 export const getSideLinks = (role: string | undefined) => {
   switch (role) {
+    case PostalUserRole.owner:
+      return sidelinks
     case PostalUserRole.master:
       return adminSidelinks
     case PostalUserRole.Limd_yalew:
       return employeeSidelinks
-      case PostalUserRole.basic || undefined:
+    case PostalUserRole.basic || undefined:
       return userSidelinks
     default:
-      return sidelinks
+      return userSidelinks
   }
 }
