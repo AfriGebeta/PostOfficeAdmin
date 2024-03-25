@@ -61,23 +61,23 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setTimeout(() => {
       setIsLoading(false)
       // handle login
-      login(data.phone, data.password)
-        .then((user) => {
-          console.log('Logged in')
-          toast({
-            title: 'Logged in successfully!',
-            description: 'You have successfully logged in to your account.',
-          })
-          navigate('/')
-        })
-        .catch((e) => {
-          console.error('Failed to login:', e)
-          toast({
-            title: 'Failed to login!',
-            description:
-              'Please check your phone number and password and try again.',
-          })
-        })
+      //   login(data.phone, data.password)
+      //     .then((user) => {
+      //       console.log('Logged in')
+      //       toast({
+      //         title: 'Logged in successfully!',
+      //         description: 'You have successfully logged in to your account.',
+      //       })
+      //       navigate('/')
+      //     })
+      //     .catch((e) => {
+      //       console.error('Failed to login:', e)
+      //       toast({
+      //         title: 'Failed to login!',
+      //         description:
+      //           'Please check your phone number and password and try again.',
+      //       })
+      //     })
     }, 3000)
   }
 
