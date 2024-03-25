@@ -63,18 +63,39 @@ function WideModal() {
     <div>
       {/* Button to trigger the modal */}
 
-      <Button onClick={() => setShowModal(true)}> Change location</Button>
+      <Button
+        onClick={(event) => {
+          event.preventDefault()
+          setShowModal(!showModal)
+        }}
+      >
+        {!showModal ? 'Change location' : 'Close'}
+      </Button>
 
+      <p> </p>
       {/* Modal */}
       {showModal && (
         <div>
-          <div>
-            <button type='button' onClick={() => setShowModal(false)}>
-              Close
-            </button>
-          </div>
+          <FormField
+            name='firstName'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>name</FormLabel>
+                <FormControl>
+                  <Input
+                    className='mt-[2%]'
+                    style={{ marginBottom: '17px' }}
+                    placeholder='bole'
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <MapContainer
-            center={[51.505, -0.09]}
+            center={[9.019363454825323, 38.802153782900255]}
             zoom={13}
             style={{ height: '400px', width: '100%' }}
           >
