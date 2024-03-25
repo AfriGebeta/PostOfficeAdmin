@@ -20,43 +20,78 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { PasswordInput } from '@/components/custom/password-input'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css' // Import Leaflet CSS
 
 const profileFormSchema = z.object({
-  username: z
-    .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .max(30, {
-      message: 'Username must not be longer than 30 characters.',
-    }),
-  email: z
-    .string({
-      required_error: 'Please select an email to display.',
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: 'Please enter a valid URL.' }),
-      })
-    )
-    .optional(),
+  firstName: z.string(),
+  lastName: z.string(),
+  phone: z.string(),
+  password: z.string(),
 })
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
-  bio: 'I own a computer.',
-  urls: [
-    { value: 'https://VirtualPO.com' },
-    { value: 'http://twitter.com/VirtualPO' },
-  ],
+  firstName: '',
+  lastName: '',
+
+  phone: '',
+  password: '',
+}
+
+import React, { useState } from 'react'
+import {
+  TERipple,
+  TEModal,
+  TEModalDialog,
+  TEModalContent,
+  TEModalHeader,
+  TEModalBody,
+  TEModalFooter,
+} from 'tw-elements-react'
+
+function WideModal() {
+  const [showModal, setShowModal] = useState(false)
+
+  return (
+    <div>
+      {/* Button to trigger the modal */}
+
+      <Button onClick={() => setShowModal(true)}> Change location</Button>
+
+      {/* Modal */}
+      {showModal && (
+        <div>
+          <div>
+            <button type='button' onClick={() => setShowModal(false)}>
+              Close
+            </button>
+          </div>
+          <MapContainer
+            center={[51.505, -0.09]}
+            zoom={13}
+            style={{ height: '400px', width: '100%' }}
+          >
+            <TileLayer
+              url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={[51.505, -0.09]}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          </MapContainer>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function ProfileForm() {
@@ -87,102 +122,87 @@ export default function ProfileForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
-          name='username'
+          name='firstName'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>first name</FormLabel>
               <FormControl>
-                <Input placeholder='VirtualPO' {...field} />
+                <Input placeholder='first name' {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
-              </FormDescription>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='lastName'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>last name</FormLabel>
+              <FormControl>
+                <Input placeholder='last name' {...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name='phone'
+          render={({ field }) => (
+            <FormItem className='space-y-1'>
+              <FormLabel>Phone Number</FormLabel>
+              <FormControl>
+                <div className='flex items-center'>
+                  <p className='p-2 text-sm text-gray-400'>+251</p>{' '}
+                  <Input placeholder='- - -  - -  - -  - -' {...field} />
+                </div>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name='email'
+          name='password'
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select a verified email to display' />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value='m@example.com'>m@example.com</SelectItem>
-                  <SelectItem value='m@google.com'>m@google.com</SelectItem>
-                  <SelectItem value='m@support.com'>m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage verified email addresses in your{' '}
-                <Link to='/examples/forms'>email settings</Link>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='bio'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
+            <FormItem className='space-y-1'>
+              <div className='flex items-center justify-between'>
+                <FormLabel>Password</FormLabel>
+                <Link
+                  to='/forgot-password'
+                  className='text-sm font-medium text-muted-foreground hover:opacity-75'
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <FormControl>
-                <Textarea
-                  placeholder='Tell us a little bit about yourself'
-                  className='resize-none'
-                  {...field}
-                />
+                <PasswordInput placeholder='********' {...field} />
               </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations to
-                link to them.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div>
-          {fields.map((field, index) => (
-            <FormField
-              control={form.control}
-              key={field.id}
-              name={`urls.${index}.value`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={cn(index !== 0 && 'sr-only')}>
-                    URLs
-                  </FormLabel>
-                  <FormDescription className={cn(index !== 0 && 'sr-only')}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-          <Button
-            type='button'
-            variant='outline'
-            size='sm'
-            className='mt-2'
-            onClick={() => append({ value: '' })}
-          >
-            Add URL
-          </Button>
-        </div>
+        <WideModal />
+
         <Button type='submit'>Update profile</Button>
       </form>
     </Form>
   )
 }
+
+// "firstName" : "kebede",
+//     "lastName" : "basdfeso",
+//     "phoneNumber" : "0956148732",
+//     "password" : "passowrd",
+//     "location" : {
+//         "name" : "Main" ,
+//         "coords" : {
+//             "latitude"  : 8.194781321106052  ,
+//             "longitude"   : 38.81276362247961
+//         }
+//     }

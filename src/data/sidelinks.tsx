@@ -232,33 +232,34 @@ const userSidelinks: SideLink[] = [
 
 const customerSideLinks: SideLink[] = [
   {
-    title: 'Dashboard',
+    title: 'Welcome',
     label: '',
-    href: '/',
+    href: '/welcome',
     icon: <IconLayoutDashboard size={18} />,
   },
+
   {
     title: 'Sent package',
-    label: '3',
-    href: '/tasks',
+    label: '',
+    href: '/outgoing',
     icon: <IconChecklist size={18} />,
   },
   {
     title: 'Incoming package',
-    label: '3',
-    href: '/tasks',
+    label: '',
+    href: '/incoming',
     icon: <IconChecklist size={18} />,
   },
   {
     title: 'package history',
-    label: '9',
-    href: '/tasks',
+    label: '',
+    href: '/history',
     icon: <IconMessages size={18} />,
   },
 
   {
     title: 'send',
-    label: '9',
+    label: '',
     href: '/mail',
     icon: <IconMessages size={18} />,
   },

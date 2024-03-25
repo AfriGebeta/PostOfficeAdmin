@@ -169,73 +169,12 @@ export const packageColumn: ColumnDef<Task>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: 'title',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Title' />
-    ),
-    cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label)
 
-      return (
-        <div className='flex space-x-2'>
-          {label && <Badge variant='outline'>{label.label}</Badge>}
-          <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
-            {row.getValue('title')}
-          </span>
-        </div>
-      )
-    },
-  },
-
-  {
-    accessorKey: 'priority',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Priority' />
-    ),
-    cell: ({ row }) => {
-      const priority = priorities.find(
-        (priority) => priority.value === row.getValue('priority')
-      )
-
-      if (!priority) {
-        return null
-      }
-
-      return (
-        <div className='flex items-center'>
-          {priority.icon && (
-            <priority.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-          )}
-          <span>{priority.label}</span>
-        </div>
-      )
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-  },
   {
     id: 'actions',
     cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 
-  // sdsd
-  {
-    accessorKey: 'other',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Other' />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className='flex space-x-2'>
-          <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
-            {row.getValue('other')}
-          </span>
-        </div>
-      )
-    },
-  },
   {
     accessorKey: 'status',
     header: ({ column }) => (
@@ -286,6 +225,21 @@ export const packageColumn: ColumnDef<Task>[] = [
     accessorKey: 'sentTo',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='sentTo' />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className='flex space-x-2'>
+          <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
+            {row.getValue('other')}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'detail',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='detail' />
     ),
     cell: ({ row }) => {
       return (

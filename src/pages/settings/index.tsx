@@ -35,7 +35,9 @@ export default function Settings() {
             Manage your account settings and set e-mail preferences.
           </p>
         </div>
+
         <Separator className='my-6' />
+
         <div className='flex flex-1 flex-col space-y-8 overflow-auto lg:flex-row lg:space-x-12 lg:space-y-0'>
           <aside className='sticky top-0 lg:w-1/5'>
             <SidebarNav items={sidebarNavItems} />
@@ -57,29 +59,29 @@ const sidebarNavItems = [
     icon: <IconUser size={18} />,
     href: '/settings',
   },
-  {
-    title: 'Account',
-    icon: <IconTool size={18} />,
-    href: '/settings/account',
-  },
-  {
-    title: 'Appearance',
-    icon: <IconPalette size={18} />,
-    href: '/settings/appearance',
-  },
-  {
-    title: 'Notifications',
-    icon: <IconNotification size={18} />,
-    href: '/settings/notifications',
-  },
-  {
-    title: 'Display',
-    icon: <IconBrowserCheck size={18} />,
-    href: '/settings/display',
-  },
-  {
-    title: 'Error Example',
-    icon: <IconExclamationCircle size={18} />,
-    href: '/settings/error-example',
-  },
+  // {
+  //   title: 'Account',
+  //   icon: <IconTool size={18} />,
+  //   href: '/settings/account',
+  // },
+  // {
+  //   title: 'Appearance',
+  //   icon: <IconPalette size={18} />,
+  //   href: '/settings/appearance',
+  // },
+  // {
+  //   title: 'Notifications',
+  //   icon: <IconNotification size={18} />,
+  //   href: '/settings/notifications',
+  // },
+  // {
+  //   title: 'Display',
+  //   icon: <IconBrowserCheck size={18} />,
+  //   href: '/settings/display',
+  // },
+  // {
+  //   title: 'Error Example',
+  //   icon: <IconExclamationCircle size={18} />,
+  //   href: '/settings/error-example',
+  // },
 ]

@@ -70,13 +70,31 @@ const router = createBrowserRouter([
         }),
       },
       {
-        path: 'tasks',
+        path: 'incoming',
+        lazy: async () => ({
+          Component: (await import('./pages/tasks')).default,
+        }),
+      },
+      {
+        path: 'outgoing',
+        lazy: async () => ({
+          Component: (await import('./pages/tasks')).default,
+        }),
+      },
+      {
+        path: 'history',
         lazy: async () => ({
           Component: (await import('./pages/tasks')).default,
         }),
       },
       {
         path: 'chats',
+        lazy: async () => ({
+          Component: (await import('@/components/coming-soon')).default,
+        }),
+      },
+      {
+        path: 'welcome',
         lazy: async () => ({
           Component: (await import('@/components/coming-soon')).default,
         }),
