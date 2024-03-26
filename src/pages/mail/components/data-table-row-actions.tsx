@@ -1,4 +1,5 @@
 import { Row } from '@tanstack/react-table'
+import axios from 'axios'
 
 import { Button } from '@/components/custom/button'
 import {
@@ -8,6 +9,9 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+
+
+import { toast } from '@/components/ui/use-toast'
 
 import { statuses } from '../data/data'
 import React from 'react'
@@ -19,6 +23,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
+
 
   const status = statuses.find(
     (status) => status.value === row.getValue('status')
@@ -34,6 +39,33 @@ export function DataTableRowActions<TData>({
     if(newStatus){
       setVisibleStatus(newStatus)
     }
+    // send a get request to https://api.afromessage.com/api/send?from={IDENTIFIER_ID}&sender={YOUR_SENDER_NAME}&to={YOUR_RECIPIENT}&message={YOUR_MESSAGE}&callback={YOUR_CALLBACK}
+    // with a bearer token in the header from the env file (afroMessageToken)
+    // if we get an "acknowledge":"success", then we show a toast with the message "Message sent successfully"
+    // if we get an "acknowledge":"error", then we show a toast with the message "Message failed to send"
+
+   axios.get(`https://api.afromessage.com/api/send?sender=VirtualPost&to=+251920731140&message=SomeMessage`, {
+    headers: {
+      'Authorization': `Bearer ${import.meta.env.VITE_AFRO_TOKEN}`
+    }
+  }).then((response) => {
+    if(response.data.acknowledge === 'success'){
+      toast({
+        title: 'Message sent!',
+        description: 'A message has been sent to the recipient.',
+      })
+    } else {
+      toast({
+        title: 'Message failed to send',
+        description: 'The message failed to send.',
+      })
+    }}).catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Message failed to send',
+        description: 'The message failed to send.',
+      })
+      });
   }
 
   return (
