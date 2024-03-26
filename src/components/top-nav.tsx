@@ -8,6 +8,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from './custom/button'
 import { IconMenu } from '@tabler/icons-react'
+import ThemeSwitch from './theme-switch'
+import { UserNav } from './user-nav'
 
 interface TopNavProps extends React.HTMLAttributes<HTMLElement> {
   links: {
@@ -21,6 +23,7 @@ export function TopNav({ className, links, ...props }: TopNavProps) {
   return (
     <>
       <div className='md:hidden'>
+        ascascascascasc
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size='icon' variant='outline'>
@@ -38,6 +41,8 @@ export function TopNav({ className, links, ...props }: TopNavProps) {
                 </Link>
               </DropdownMenuItem>
             ))}
+              <ThemeSwitch />
+          <UserNav />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -23,6 +23,10 @@ import {
 import { cn } from '@/lib/utils'
 import useCheckActiveNav from '@/hooks/use-check-active-nav'
 import { SideLink } from '@/data/sidelinks'
+import ThemeSwitch from './theme-switch'
+import { UserNav } from './user-nav'
+import { Card } from './ui/card'
+import { useAuth } from '@/hooks/authProvider'
 
 interface NavProps extends React.HTMLAttributes<HTMLDivElement> {
   isCollapsed: boolean
@@ -36,6 +40,7 @@ export default function Nav({
   className,
   closeNav,
 }: NavProps) {
+  const { user } = useAuth()
   const renderLink = ({ sub, ...rest }: SideLink) => {
     const key = `${rest.title}-${rest.href}`
     if (isCollapsed && sub)
@@ -69,6 +74,10 @@ export default function Nav({
       <TooltipProvider delayDuration={0}>
         <nav className='grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'>
           {links.map(renderLink)}
+          <Card className='flex flex-row justify-evenly items-center p-4 m-4 md:hidden'>
+          <Card className='flex flex-row items-center justify-start pr-4 gap-2'><ThemeSwitch /> Change theme</Card>
+          <Card className='flex flex-row items-center justify-start pr-4 gap-2'><UserNav /> {user?.firstName} {user?.lastName.slice(0, 1)}.</Card>
+          </Card>
         </nav>
       </TooltipProvider>
     </div>
@@ -90,6 +99,7 @@ function NavLink({
 }: NavLinkProps) {
   const { checkActiveNav } = useCheckActiveNav()
   return (
+    <>
     <Link
       to={href}
       onClick={closeNav}
@@ -111,6 +121,8 @@ function NavLink({
         </div>
       )}
     </Link>
+
+    </>
   )
 }
 
