@@ -43,8 +43,12 @@ export function DataTableRowActions<TData>({
     // with a bearer token in the header from the env file (afroMessageToken)
     // if we get an "acknowledge":"success", then we show a toast with the message "Message sent successfully"
     // if we get an "acknowledge":"error", then we show a toast with the message "Message failed to send"
+    const apiUrl = `https://api.afromessage.com/api/send?from=${import.meta.env.VITE_AFRO_ID}&to=${import.meta.env.VITE_RECIPIENT_PHONE}&message=Your+package+status+is+${visibleStatus?.label}`;
+    const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
-   axios.get(`https://api.afromessage.com/api/send?sender=VirtualPost&to=+251920731140&message=SomeMessage`, {
+    console.log(import.meta.env.VITE_AFRO_TOKEN)
+
+   axios.get(corsProxyUrl + apiUrl, {
     headers: {
       'Authorization': `Bearer ${import.meta.env.VITE_AFRO_TOKEN}`
     }
@@ -57,13 +61,13 @@ export function DataTableRowActions<TData>({
     } else {
       toast({
         title: 'Message failed to send',
-        description: 'The message failed to send.',
+        description: `'The message failed to send.': ${response.data}`,
       })
     }}).catch((error) => {
       console.error(error)
       toast({
         title: 'Message failed to send',
-        description: 'The message failed to send.',
+        description: `'The message failed to send.': ${error.message}`,
       })
       });
   }
