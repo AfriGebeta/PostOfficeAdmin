@@ -4,13 +4,15 @@ import { z } from 'zod'
 // IRL, you will have a schema for your data models.
 export const taskSchema = z.object({
   id: z.string(),
-  category: z.string(),
+  type: z.string(),
   details: z.string(),
   status: z.string(),
   label: z.string(),
   priority: z.string(),
+  fragile: z.boolean().optional(),
+  sentFromId: z.string(),
+  sentToId: z.string(),
 })
-
 export enum TaskCategory {
   DISPATCH = 'dispatch',
   SCAN = 'scan',

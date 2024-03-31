@@ -51,5 +51,13 @@ export const columns: ColumnDef<PostalUser>[] = [
       )
     },
   },
+  {
+    accessorKey: 'phoneNumber',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Phone Number' />
+    ),
+    cell: ({ row }) => <div>{"+251 " + row.original.phone}</div>,
+    
+  }
   
 ]

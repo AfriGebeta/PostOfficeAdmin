@@ -4,11 +4,30 @@ import { UserNav } from '@/components/user-nav'
 import { Layout, LayoutBody, LayoutHeader } from '@/components/custom/layout'
 import { DataTable } from './components/data-table'
 import { columns } from './components/columns'
-import { tasks } from './data/tasks'
 import { useAuth } from '@/hooks/authProvider'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { Task } from './data/schema'
 
 export default function Tasks() {
   const { user } = useAuth()
+  const [ tasks, setTasks ] = useState<Task[]>([])
+  const handleTaskFetch = async () => {
+    console.log("ppap", import.meta.env.VITE_API_URL)
+    const ftechtasks = await axios(import.meta.env.VITE_API_URL + '/package').then(res => {
+      return res.data as Task[]
+    }).catch(err => {
+      console.error(err)
+      return []
+    });
+    
+    console.log("ppaps", ftechtasks)
+    setTasks(ftechtasks)
+  }
+
+  useEffect(() => {
+    handleTaskFetch()
+  }, [])
 
   const availableTasks = tasks.filter((task) => (task.status === 'waiting' || task.status === 'en-route') || task.driverAssigned === undefined)
   return (

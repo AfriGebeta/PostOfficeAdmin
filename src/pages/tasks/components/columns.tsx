@@ -9,6 +9,9 @@ import { priorities } from '../data/data'
 import { Task } from '../data/schema'
 import { Button } from '@/components/custom/button'
 import { toast } from '@/components/ui/use-toast'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { names } from '../data/tasks'
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -45,15 +48,19 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'category',
+    accessorKey: 'type',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Category' />
     ),
-    cell: ({ row }) => (
+    cell: ({ row }) => {
+
+  
+      return (
+      
       <div className='flex items-center'>
-        <span>{row.getValue('category')}</span>
+        <span>{row.getValue('type')}</span>
       </div>
-    ),
+    )},
   },
   {
     accessorKey: 'priority',
@@ -61,15 +68,14 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title='Priority' />
     ),
     cell: ({ row }) => {
-      const label = priorities.find(
-        (label) => label.value === row.original.priority
-      )
+      // get a random priority
+      const label = priorities[Math.floor(Math.random() * priorities.length)]
       return (
         <>
           {label && (
             <div className='flex flex-row'>
               <label.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-              <Badge variant='outline'>{label?.label}</Badge>
+              <Badge variant='outline'>{label.label}</Badge>
             </div>
           )}
         </>
@@ -80,15 +86,62 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: 'details',
+    accessorKey: 'from',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Details' />
+      <DataTableColumnHeader column={column} title='From' />
     ),
     cell: ({ row }) => {
+      const [from, setFrom] = useState<any>(null)
+      const getUserById = async (id: string) => {
+        const user = await axios(import.meta.env.VITE_API_URL + '/profile?id=' + id).then(res => {
+          return res.data
+        }).catch(err => {
+          console.error(err)
+          return null
+        })
+        return user
+      }
+      useEffect(() => {
+        getUserById(row.original.sentFromId).then(user => {
+          setFrom(user)
+        })
+      }, []);
       return (
         <div className='flex space-x-2'>
           <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
-            {row.getValue('details')}
+            {from?.firstName} {from?.lastName}
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: 'to',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='To' />
+    ),
+    cell: ({ row }) => {
+      const [to, setTo] = useState<any>(null)
+      const getUserById = async (id
+        : string) => {
+        const user = await axios(import.meta.env.VITE_API_URL + '/profile?id=' + id).then(res => {
+          return res.data
+        }).catch(err => {
+          console.error(err)
+          return null
+        })
+        return user
+      }
+      useEffect(() => {
+        getUserById(row.original.sentToId).then(user => {
+          setTo(user)
+        })
+      }, []);
+
+      return (
+        <div className='flex space-x-2'>
+          <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
+            {to?.firstName} {to?.lastName}
           </span>
         </div>
       )
@@ -100,7 +153,7 @@ export const columns: ColumnDef<Task>[] = [
       <DataTableColumnHeader column={column} title='Driver' />
     ),
     cell: ({ row }) => {
-      const driver = row.original.driverAssigned
+      const driver = names[Math.floor(Math.random() * names.length)]
       const assignDriver = () => {
         toast({
           title: 'No drivers available',

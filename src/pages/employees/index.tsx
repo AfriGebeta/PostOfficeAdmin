@@ -26,7 +26,7 @@ export default function Employees() {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Welcome back! {user?.firstName}</h2>
             <p className='text-muted-foreground'>
-              Here&apos;s a list of of all the mail in the system.
+              Here&apos;s a list of of all the people in the system.
             </p>
           </div>
         </div>

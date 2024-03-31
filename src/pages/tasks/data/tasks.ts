@@ -122,23 +122,23 @@ export const tasks: Task[] = [
   },
 ] as Task[]
 
-
+export const names = [
+  'Rob Brown',
+  'John Doe',
+  'Jason Brydon',
+  'Jane Doe',
+  'Alice Smith',
+  'Bob Brown',
+  'Charlie Brown',
+  'David Doe',
+]
 tasks.forEach((task, index) => {
   // give randm category
-  task.category =
+  task.type =
     Object.values(TaskCategory)[index % Object.keys(TaskCategory).length]
   // assign random driver to some of the tasks
   if (index % 3 === 0) {
-    const names = [
-      'Rob Brown',
-      'John Doe',
-      'Jason Brydon',
-      'Jane Doe',
-      'Alice Smith',
-      'Bob Brown',
-      'Charlie Brown',
-      'David Doe',
-    ]
+    
     task.driverAssigned = names[Math.floor(Math.random() * names.length)]
   }
 })

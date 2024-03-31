@@ -11,6 +11,8 @@ import {
 
 import { statuses } from '../data/data'
 import React from 'react'
+import axios from 'axios'
+import { toast } from '@/components/ui/use-toast'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -20,10 +22,11 @@ export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
 
-  const status = statuses.find(
-    (status) => status.value === row.getValue('status')
-  )
-
+  // const status = statuses.find(
+  //   (status) => status.value === row.getValue('status')
+  // )
+// assign a random status to the task
+const status = statuses[Math.floor(Math.random() * statuses.length)]
   if (!status) {
     return null
   }
@@ -34,6 +37,41 @@ export function DataTableRowActions<TData>({
     if(newStatus){
       setVisibleStatus(newStatus)
     }
+    // send a get request to https://api.afromessage.com/api/send?from={IDENTIFIER_ID}&sender={YOUR_SENDER_NAME}&to={YOUR_RECIPIENT}&message={YOUR_MESSAGE}&callback={YOUR_CALLBACK}
+    // with a bearer token in the header from the env file (afroMessageToken)
+    // if we get an "acknowledge":"success", then we show a toast with the message "Message sent successfully"
+    // if we get an "acknowledge":"error", then we show a toast with the message "Message failed to send"
+    const apiUrl = import.meta.env.VITE_API_URL
+    console.log({row: row.original})  
+
+    const testPhones = [
+      "+251 920 731140",
+      "+251 92 911 1582"
+    ]
+
+   axios.post(apiUrl + `/sendsms`, {
+      //@ts-ignore
+      YOUR_RECIPIENT: testPhones[Math.floor(Math.random() * testPhones.length)],
+      MESSAGE: `The status of your package has been updated to ${visibleStatus.label}`
+  }).then((response) => {
+    console.log(response)
+    if(response.data.acknowledge === 'success'){
+      toast({
+        title: 'Message sent!',
+        description: 'A message has been sent to the recipient.',
+      })
+    } else {
+      toast({
+        title: 'Message failed to send',
+        description: `'The message failed to send.': ${response.data}`,
+      })
+    }}).catch((error) => {
+      console.error(error)
+      toast({
+        title: 'Message failed to send',
+        description: `'The message failed to send.': ${error.message}`,
+      })
+      });
   }
 
   return (
