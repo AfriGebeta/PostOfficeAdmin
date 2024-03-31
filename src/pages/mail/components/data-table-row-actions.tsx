@@ -43,16 +43,15 @@ export function DataTableRowActions<TData>({
     // with a bearer token in the header from the env file (afroMessageToken)
     // if we get an "acknowledge":"success", then we show a toast with the message "Message sent successfully"
     // if we get an "acknowledge":"error", then we show a toast with the message "Message failed to send"
-    const apiUrl = `https://api.afromessage.com/api/send?from=${import.meta.env.VITE_AFRO_ID}&to=${import.meta.env.VITE_RECIPIENT_PHONE}&message=Your+package+status+is+${visibleStatus?.label}`;
-    const corsProxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const apiUrl = import.meta.env.VITE_API_URL
+    console.log({row: row.original})  
 
-    console.log(import.meta.env.VITE_AFRO_TOKEN)
-
-   axios.get(corsProxyUrl + apiUrl, {
-    headers: {
-      'Authorization': `Bearer ${import.meta.env.VITE_AFRO_TOKEN}`
-    }
+   axios.post(apiUrl + `/sendsms`, {
+      //@ts-ignore
+      YOUR_RECIPIENT: row.original.phoneNumber,
+      MESSAGE: `The status of your package ${row.getValue('details')} status has been updated to ${visibleStatus.label}`
   }).then((response) => {
+    console.log(response)
     if(response.data.acknowledge === 'success'){
       toast({
         title: 'Message sent!',

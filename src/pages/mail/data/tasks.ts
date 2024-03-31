@@ -723,3 +723,10 @@ tasks.forEach((task, index) => {
     task.driverAssigned = names[Math.floor(Math.random() * names.length)]
   }
 })
+
+// add phone number to each task row starting with +251920 and has 6 digits
+tasks.forEach((task) => {
+  // task.phoneNumber = `+251920${Math.floor(Math.random() * 1000000)}`
+  task.phoneNumber = `+251920731140`
+}
+)

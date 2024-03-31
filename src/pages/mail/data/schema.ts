@@ -9,6 +9,7 @@ export const taskSchema = z.object({
   status: z.string(),
   label: z.string(),
   priority: z.string(),
+  phoneNumber: z.string(),
 })
 
 export enum TaskCategory {
