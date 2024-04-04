@@ -56,7 +56,7 @@ export default function Dashboard() {
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Total Revenue
+                    Total Revenue from Deliveries
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -81,7 +81,7 @@ export default function Dashboard() {
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Subscriptions
+                    Total number of Customers
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -107,7 +107,7 @@ export default function Dashboard() {
               </Card>
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>Sales</CardTitle>
+                  <CardTitle className='text-sm font-medium'>Number of Deliveries</CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     viewBox='0 0 24 24'
@@ -132,7 +132,7 @@ export default function Dashboard() {
               <Card>
                 <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                   <CardTitle className='text-sm font-medium'>
-                    Active Now
+                    Orders
                   </CardTitle>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -166,9 +166,9 @@ export default function Dashboard() {
               </Card>
               <Card className='col-span-1 lg:col-span-3'>
                 <CardHeader>
-                  <CardTitle>Recent Sales</CardTitle>
+                  <CardTitle>Recent Deliveries</CardTitle>
                   <CardDescription>
-                    You made 265 sales this month.
+                    You made 2650 deliveries this month.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
