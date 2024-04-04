@@ -9,6 +9,8 @@ import { priorities } from '../data/data'
 import { Task } from '../data/schema'
 import { Button } from '@/components/custom/button'
 import { toast } from '@/components/ui/use-toast'
+import { names } from '@/pages/tasks/data/tasks'
+import { useState } from 'react'
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -36,24 +38,13 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'id',
+    accessorKey: 'trackingNumber',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Id' />
+      <DataTableColumnHeader column={column} title='trackingNumber' />
     ),
-    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('id')}</div>,
+    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('trackingNumber')}</div>,
     enableSorting: false,
     enableHiding: false,
-  },
-  {
-    accessorKey: 'category',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Category' />
-    ),
-    cell: ({ row }) => (
-      <div className='flex items-center'>
-        <span>{row.getValue('category')}</span>
-      </div>
-    ),
   },
   {
     accessorKey: 'priority',
@@ -95,29 +86,43 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
+    accessorKey: 'category',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Category' />
+    ),
+    cell: ({ row }) => (
+      <div className='flex items-center'>
+        <span>{row.getValue('category')}</span>
+      </div>
+    ),
+  },
+  {
     accessorKey: 'driver assigned',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Driver' />
     ),
     cell: ({ row }) => {
-      const driver = row.original.driverAssigned
+      const [driver, setDriver] = useState("")
       const assignDriver = () => {
+        const randomDriver = names[Math.floor(Math.random() * names.length)]
+        row.original.driverAssigned = randomDriver
+        setDriver(randomDriver)
         toast({
-          title: 'No drivers available',
+          title: 'Driver assigned',
           description:
-            'We could not find any drivers available for this task at the moment',
+            `Driver ${driver} has been assigned to the task`,
         })
       }
       return (
         <>
-          {driver ? (
+          {row.original.driverAssigned ? (
             <div className='flex flex-row items-center'>
               <img
-                src={`https://api.dicebear.com/8.x/lorelei/svg?seed=${driver}`}
-                alt={driver}
+                src={`https://api.dicebear.com/8.x/lorelei/svg?seed=${row.original.driverAssigned}`}
+                alt={row.original.driverAssigned}
                 className='h-8 w-8 rounded-full'
               />
-              <span className='ml-2'>{driver}</span>
+              <span className='ml-2'>{row.original.driverAssigned}</span>
             </div>
           ) : (
             <Button

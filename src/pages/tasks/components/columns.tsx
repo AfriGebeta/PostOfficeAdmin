@@ -39,29 +39,15 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'id',
+    accessorKey: 'trackingNumber',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Id' />
+      <DataTableColumnHeader column={column} title='trackingNumber' />
     ),
-    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('id')}</div>,
+    cell: ({ row }) => <div className='w-[80px]'>{row.getValue('trackingNumber')}</div>,
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: 'type',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Category' />
-    ),
-    cell: ({ row }) => {
 
-  
-      return (
-      
-      <div className='flex items-center'>
-        <span>{row.getValue('type')}</span>
-      </div>
-    )},
-  },
   {
     accessorKey: 'priority',
     header: ({ column }) => (
@@ -148,6 +134,21 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
+    accessorKey: 'type',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Category' />
+    ),
+    cell: ({ row }) => {
+
+  
+      return (
+      
+      <div className='flex items-center'>
+        <span>{row.getValue('type')}</span>
+      </div>
+    )},
+  },
+  {
     accessorKey: 'driver assigned',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Driver' />
@@ -155,10 +156,11 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       const driver = names[Math.floor(Math.random() * names.length)]
       const assignDriver = () => {
+        row.original.driverAssigned = driver
         toast({
-          title: 'No drivers available',
+          title: 'Driver assigned',
           description:
-            'We could not find any drivers available for this task at the moment',
+            `Driver ${driver} has been assigned to the task`,
         })
       }
       return (
