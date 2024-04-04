@@ -53,7 +53,7 @@ export const columns: ColumnDef<Task>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Priority' />
     ),
-    cell: ({ row }) => {
+    cell: () => {
       // get a random priority
       const label = priorities[Math.floor(Math.random() * priorities.length)]
       return (
