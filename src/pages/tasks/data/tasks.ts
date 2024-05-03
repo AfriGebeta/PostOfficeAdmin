@@ -139,6 +139,6 @@ tasks.forEach((task, index) => {
   // assign random driver to some of the tasks
   if (index % 3 === 0) {
     
-    task.driverAssigned = names[Math.floor(Math.random() * names.length)]
+    task.assignedTo = names[Math.floor(Math.random() * names.length)]
   }
 })

@@ -17,11 +17,12 @@ import React from 'react'
 
 export default function CreateEmployee() {
   const [showDialog, setShowDialog] = React.useState(false)
+  
 
   const handleSaveChanges = () => {
     toast({
       title: 'Changes saved',
-      description: 'The employee has been successfully added to the database',
+      description: 'The driver has been successfully added to the database',
     })
 
     setShowDialog(false)
@@ -67,7 +68,7 @@ export default function CreateEmployee() {
                   </Link> */}
                 </p>
               </div>
-              <SignUpForm onSubmitCallback={handleSaveChanges} isDriver={false}/>
+              <SignUpForm onSubmitCallback={handleSaveChanges} isDriver={true}/>
               <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
                 By creating an account, you agree to our{' '}
                 <a

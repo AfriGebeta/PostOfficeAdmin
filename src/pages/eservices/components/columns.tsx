@@ -121,7 +121,7 @@ export const columns: ColumnDef<Task>[] = [
       const [driver, setDriver] = useState("")
       const assignDriver = () => {
         const randomDriver = names[Math.floor(Math.random() * names.length)]
-        row.original.driverAssigned = randomDriver
+        row.original.assignedTo = randomDriver
         setDriver(randomDriver)
         toast({
           title: 'Driver assigned',
@@ -131,14 +131,14 @@ export const columns: ColumnDef<Task>[] = [
       }
       return (
         <>
-          {row.original.driverAssigned ? (
+          {row.original.assignedTo ? (
             <div className='flex flex-row items-center'>
               <img
-                src={`https://api.dicebear.com/8.x/lorelei/svg?seed=${row.original.driverAssigned}`}
-                alt={row.original.driverAssigned}
+                src={`https://api.dicebear.com/8.x/lorelei/svg?seed=${row.original.assignedTo}`}
+                alt={row.original.assignedTo}
                 className='h-8 w-8 rounded-full'
               />
-              <span className='ml-2'>{row.original.driverAssigned}</span>
+              <span className='ml-2'>{row.original.assignedTo}</span>
             </div>
           ) : (
             <Button

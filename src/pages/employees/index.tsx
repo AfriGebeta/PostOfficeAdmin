@@ -4,12 +4,40 @@ import { UserNav } from '@/components/user-nav'
 import { Layout, LayoutBody, LayoutHeader } from '@/components/custom/layout'
 import { DataTable } from './components/data-table'
 import { columns } from './components/columns'
-import { users } from './data/tasks'
-import { PostalUserRole, useAuth } from '@/hooks/authProvider'
+import { useAuth } from '@/hooks/authProvider'
+import { EmployeeUser } from '../drivers'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function Employees() {
   const { user } = useAuth()
-  const validUsers = users.filter((user) => user.role === PostalUserRole.master || user.role === PostalUserRole.Limd_yalew)
+  const [ drivers, setdrivers ] = useState<EmployeeUser[]>([])
+  const handleTaskFetch = async () => {
+    console.log("getting employees -------------")
+    let fetchEmployees = await axios(import.meta.env.VITE_API_URL + '/employee').then(res => {
+      console.log(res.data, "from employees======----");
+      return res.data as EmployeeUser[]
+    }).catch(err => {
+      console.error(err)
+      return []
+    });
+    
+    console.log(fetchEmployees, "from empl======", user?.id);
+    
+    fetchEmployees = fetchEmployees.filter(empl => !empl.isDriver)
+    setdrivers(fetchEmployees.map(empl=> {
+      return {
+        ...empl,
+        //@ts-ignore
+        ...empl.profile,
+        employeeId: empl.id
+      }
+    }))
+  }
+
+  useEffect(() => {
+    handleTaskFetch()
+  }, [])
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -31,7 +59,7 @@ export default function Employees() {
           </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-          <DataTable data={validUsers} columns={columns} />
+          <DataTable data={drivers} columns={columns} />
         </div>
       </LayoutBody>
     </Layout>

@@ -21,5 +21,5 @@ export enum TaskCategory {
 }
 
 export interface Task extends z.infer<typeof taskSchema>{
-  driverAssigned?: string
+  assignedTo?: string
 } 

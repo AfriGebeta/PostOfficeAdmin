@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { statuses } from '../data/data'
+import { generateStatus, statuses } from '../data/data'
 import React from 'react'
 import axios from 'axios'
 import { toast } from '@/components/ui/use-toast'
@@ -26,33 +26,12 @@ export function DataTableRowActions<TData>({
   //   (status) => status.value === row.getValue('status')
   // )
 // assign a random status to the task
-const status = statuses[Math.floor(Math.random() * statuses.length)]
-  if (!status) {
-    return null
-  }
-  const [visibleStatus, setVisibleStatus] = React.useState(status)
+const apiUrl = import.meta.env.VITE_API_URL
 
-  const handleStatusChange = (givenStatus: any) => {
-    const newStatus = statuses.find((status) => status.value === givenStatus.value)
-    if(newStatus){
-      setVisibleStatus(newStatus)
-    }
-    // send a get request to https://api.afromessage.com/api/send?from={IDENTIFIER_ID}&sender={YOUR_SENDER_NAME}&to={YOUR_RECIPIENT}&message={YOUR_MESSAGE}&callback={YOUR_CALLBACK}
-    // with a bearer token in the header from the env file (afroMessageToken)
-    // if we get an "acknowledge":"success", then we show a toast with the message "Message sent successfully"
-    // if we get an "acknowledge":"error", then we show a toast with the message "Message failed to send"
-    const apiUrl = import.meta.env.VITE_API_URL
-    console.log({row: row.original})  
-
-    const testPhones = [
-      "+251 920 731140",
-      "+251 92 911 1582"
-    ]
-
-   axios.post(apiUrl + `/sendsms`, {
+    const sendSms = async (phoneNumber: string) => await axios.post(apiUrl + `/sendsms`, {
       //@ts-ignore
-      YOUR_RECIPIENT: testPhones[Math.floor(Math.random() * testPhones.length)],
-      MESSAGE: `The status of your package has been updated to ${visibleStatus.label}`
+      YOUR_RECIPIENT: phoneNumber,
+      MESSAGE: `The status of your package has been updated to ${visibleStatus.value}`
   }).then((response) => {
     console.log(response)
     if(response.data.acknowledge === 'success'){
@@ -72,6 +51,46 @@ const status = statuses[Math.floor(Math.random() * statuses.length)]
         description: `'The message failed to send.': ${error.message}`,
       })
       });
+      //@ts-ignore
+      const updatePackageStatus = async (newStatus: string) => await axios.put(apiUrl + `/package?id=${row.original.id}`, {
+        status: newStatus
+    }).then((response) => {
+      console.log(response)
+      toast({
+        title: 'Status updated!',
+        description: 'The status has been updated successfully.',
+      })}).catch((error) => {
+        console.error(error)
+        toast({
+          title: 'Internal failure',
+          description: `Failed with error: ${error.message}`,
+        })
+        });
+
+      console.log("statis" ,row.original);
+      //@ts-ignore
+// const status = row.original.status;
+  // if (!status) {
+  //   return null
+  // }
+  const [visibleStatus, setVisibleStatus] = React.useState(generateStatus(row.original.status))
+
+  const handleStatusChange = (givenStatus: any) => {
+    const newStatus = statuses.find((status) => status.value === givenStatus.value)
+    if(newStatus){
+      setVisibleStatus(generateStatus(newStatus.value))
+    }
+    // send a get request to https://api.afromessage.com/api/send?from={IDENTIFIER_ID}&sender={YOUR_SENDER_NAME}&to={YOUR_RECIPIENT}&message={YOUR_MESSAGE}&callback={YOUR_CALLBACK}
+    // with a bearer token in the header from the env file (afroMessageToken)
+    // if we get an "acknowledge":"success", then we show a toast with the message "Message sent successfully"
+    // if we get an "acknowledge":"error", then we show a toast with the message "Message failed to send"
+    
+    console.log({row: row.original})  
+    //@ts-ignore
+   sendSms(row.original.sentTo.phoneNumber)
+  //@ts-ignore
+   sendSms(row.original.sentFrom.phoneNumber)
+  updatePackageStatus(givenStatus.value);
   }
 
   return (

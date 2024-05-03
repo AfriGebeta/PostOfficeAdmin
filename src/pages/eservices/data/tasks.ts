@@ -203,14 +203,13 @@ tasks.forEach((task, index) => {
       'Charlie Brown',
       'David Doe',
     ]
-    task.driverAssigned = names[Math.floor(Math.random() * names.length)]
+    task.assignedTo = names[Math.floor(Math.random() * names.length)]
   }
 })
 
 // add phone number to each task row starting with +251920 and has 6 digits
 tasks.forEach((task) => {
   task.phoneNumber = `+251920${Math.floor(Math.random() * 1000000)}`
-  // task.phoneNumber = `+251920731140`
   task.trackingNumber = `1Z9R5W90P22${Math.floor(Math.random() * 100000)}`
 
   // assign random source
