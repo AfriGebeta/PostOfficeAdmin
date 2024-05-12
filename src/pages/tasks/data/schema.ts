@@ -12,6 +12,7 @@ export const taskSchema = z.object({
   fragile: z.boolean().optional(),
   sentFromId: z.string(),
   sentToId: z.string(),
+  trackingNumber: z.string(),
 })
 export enum TaskCategory {
   DISPATCH = 'dispatch',
@@ -20,5 +21,5 @@ export enum TaskCategory {
 }
 
 export interface Task extends z.infer<typeof taskSchema>{
-  driverAssigned?: string
+  assignedTo?: string
 } 

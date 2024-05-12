@@ -81,6 +81,12 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: 'drivers',
+        lazy: async () => ({
+          Component: (await import('./pages/drivers')).default,
+        }),
+      },
+      {
         path: 'chats',
         lazy: async () => ({
           Component: (await import('@/components/coming-soon')).default,

@@ -46,7 +46,7 @@ export const tasks: Task[] = [
   {
     id: 'MAIL-2260',
     details: 'From: Benjamin Levy -> To: James Blevins',
-    status: 'lost',
+    status: 'waiting',
     label: 'feature',
     priority: 'high',
   },
@@ -120,25 +120,99 @@ export const tasks: Task[] = [
     label: 'maintenance',
     priority: 'low',
   },
+  {
+    id: 'MAIL-7833',
+    details: 'From: Christopher Klein -> To: Chelsea Hampton',
+    status: 'delivered',
+    label: 'maintenance',
+    priority: 'low',
+  },
+  {
+    id: 'MAIL-2666',
+    details: 'From: Donna Gordon -> To: Robert Williams',
+    status: 'waiting',
+    label: 'documentation',
+    priority: 'high',
+  },
+  {
+    id: 'MAIL-4455',
+    details: 'From: John Jones -> To: William Bentley',
+    status: 'delivered',
+    label: 'feature',
+    priority: 'low',
+  },
+  {
+    id: 'MAIL-3263',
+    details: 'From: Troy Weber -> To: Bradley Jones',
+    status: 'delivered',
+    label: 'feature',
+    priority: 'medium',
+  },
+  {
+    id: 'MAIL-4081',
+    details: 'From: Cheryl Watkins -> To: Andrew Perkins',
+    status: 'waiting',
+    label: 'feature',
+    priority: 'low',
+  },
+  {
+    id: 'MAIL-6688',
+    details: 'From: Shannon Joyce -> To: Brittney Cisneros',
+    status: 'waiting',
+    label: 'maintenance',
+    priority: 'low',
+  },
+  {
+    id: 'MAIL-3478',
+    details: 'From: John Higgins -> To: Kristine Clark',
+    status: 'delivered',
+    label: 'documentation',
+    priority: 'low',
+  }
 ] as Task[]
 
-export const names = [
-  'Rob Brown',
-  'John Doe',
-  'Jason Brydon',
-  'Jane Doe',
-  'Alice Smith',
-  'Bob Brown',
-  'Charlie Brown',
-  'David Doe',
+const sources = [
+  {
+    name: 'National ID',
+    icon: 'src/assets/nid.svg',
+  },
+  {
+    name: 'Transport ministry',
+    icon: 'src/assets/trans.png',
+  },
+  {
+    name: 'Immigration',
+    icon: 'src/assets/im.jpeg',
+  },
+
 ]
+
 tasks.forEach((task, index) => {
   // give randm category
-  task.type =
+  task.category =
     Object.values(TaskCategory)[index % Object.keys(TaskCategory).length]
   // assign random driver to some of the tasks
   if (index % 3 === 0) {
-    
+    const names = [
+      'Rob Brown',
+      'John Doe',
+      'Jason Brydon',
+      'Jane Doe',
+      'Alice Smith',
+      'Bob Brown',
+      'Charlie Brown',
+      'David Doe',
+    ]
     task.assignedTo = names[Math.floor(Math.random() * names.length)]
   }
 })
+
+// add phone number to each task row starting with +251920 and has 6 digits
+tasks.forEach((task) => {
+  task.phoneNumber = `+251920${Math.floor(Math.random() * 1000000)}`
+  task.trackingNumber = `1Z9R5W90P22${Math.floor(Math.random() * 100000)}`
+
+  // assign random source
+  task.source = sources[Math.floor(Math.random() * sources.length)]
+}
+)

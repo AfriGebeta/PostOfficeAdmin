@@ -1,4 +1,4 @@
-import { HTMLAttributes, useState } from 'react'
+import { HTMLAttributes, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -14,13 +14,27 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
+import axios from 'axios'
+import { PostalUser, PostalUserRole } from '@/hooks/authProvider'
+import { toast } from '@/components/ui/use-toast'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {
-  onSubmitCallback: (data: z.infer<typeof formSchema>) => void
+  onSubmitCallback: () => void,
+  isDriver: boolean
+}
+
+type Branch = {
+  id: string
+  name: string
+  location: {
+    latitude: number
+    longitude: number
+  }
 }
 
 const formSchema = z
   .object({
+    name: z.string().min(1, { message: 'Please enter your name' }),
     phone: z
     .string()
     .min(1, { message: 'Please enter your phone' }).min(9, { message: 'Phone number is not valid' }).max(9, { message: 'Phone number is not valid' }),
@@ -42,6 +56,7 @@ const formSchema = z
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState(false)
 
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,6 +65,74 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
       confirmPassword: '',
     },
   })
+  const [branches, setBranches] = useState<Branch[]>([])
+
+  const handleBranchFetch = async () => {
+    await axios(import.meta.env.VITE_API_URL + '/branch').then(res => {
+      setBranches(res.data as Branch[])
+    }).catch((err: unknown) => {
+      console.error(err)
+      toast({
+        title: 'Something went wrong!',
+        description: `Error: ${err}`,
+      })
+      return []
+    });
+  };
+
+    const [ drivers, setDrivers ] = useState<PostalUser[]>([])
+    const [profile, setProfile] = useState<PostalUser | null>(null)
+    const [currentDriver, setCurrentDriver] = useState<PostalUser | null>(null)
+
+    const createProfile = async () => {
+      let fetchDrivers = await axios.post(import.meta.env.VITE_API_URL + '/profile/signup', {
+        firstName: form.getValues().name.split(' ')[0],
+        lastName: form.getValues().name.split(' ')[1],
+        phoneNumber: form.getValues().phone,
+        password: form.getValues().password,
+        location: {
+          name: 'Main',
+          coords: {
+            latitude: branches[0].location.latitude,
+            longitude: branches[0].location.longitude
+          }
+        }
+      }).then(res => {
+        setProfile(res.data)
+      }).catch((err: unknown) => {
+        console.error(err, "------------fails here.")
+        toast({
+          title: 'Something went wrong!',
+          description: `Error: ${err}`,
+        })
+        return []
+      });
+      
+      console.log(fetchDrivers, "from drivers======", drivers);
+      
+    }
+ 
+    
+    const createDriver = async () => {
+      let createDriver = await axios.post(import.meta.env.VITE_API_URL + '/employee', {
+        profileId: profile?.id,
+        branchId: branches[0].id,
+        isDriver: props.isDriver,
+        permissionLevel: PostalUserRole.Limd_yalew
+      }).then(res => {
+        setCurrentDriver(res.data)
+      }).catch((err: unknown) => {
+        console.error(err)
+        toast({
+          title: 'Something went wrong!',
+          description: `Error: ${err}`,
+        })
+        return []
+      });
+      
+      console.log(createDriver, "from drivers======", drivers);
+      
+    }
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
@@ -57,9 +140,28 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
 
     setTimeout(() => {
       setIsLoading(false)
-      props.onSubmitCallback(data)
+      handleBranchFetch()
     }, 3000)
   }
+
+  useEffect(() => {
+    if(branches.length > 0) {
+      createProfile()
+    }
+  }, [branches])
+
+  useEffect(() => {
+    if(profile) {
+      createDriver()
+    }
+  }, [profile])
+
+  useEffect(() => {
+    if(currentDriver) {
+      props.onSubmitCallback()
+    }
+  }, [currentDriver])
+
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -76,6 +178,19 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                     <div className='flex items-center'>
                       <p className='text-sm text-gray-400 p-2'>+251</p> <Input placeholder='- - -  - -  - -  - -' {...field} />
                     </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem className='space-y-1'>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Jim James' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

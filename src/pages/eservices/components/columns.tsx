@@ -38,6 +38,22 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: 'source',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='source' />
+    ),
+    cell: ({ row }) => <div className='min-w-60 flex flex-row justify-start items-center p-4 gap-4'>
+      <img
+        src={row.original.source.icon}
+        alt={row.original.source.name}
+        className='h-8 w-auto rounded-full'
+      />
+      {(row.getValue('source') as any).name}
+      </div>,
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: 'trackingNumber',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='trackingNumber' />

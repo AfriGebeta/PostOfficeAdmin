@@ -3,19 +3,22 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 // Define PostalUserRoles
 // type PostalUserRole = 'basic' | 'lemaj' | 'Limd yalew' | 'master' | 'owner';
 export enum PostalUserRole {
-  basic = 'basic',
-  lemaj = 'lemaj',
-  Limd_yalew = 'Limd yalew',
-  master = 'master',
-  owner = 'owner',
+  basic = 'BASIC',
+  lemaj = 'LEMAJ',
+  Limd_yalew = 'LIMDYALEW',
+  master = 'MASTER',
+  owner = 'OWNER',
 }
 
 // Define user type
 export interface PostalUser {
+  id: string;
   phone: string;
   firstName: string;
   lastName: String;
   role: PostalUserRole;
+  isDriver?: boolean;
+  branch?: string;
 }
 
 // Define context type
@@ -70,11 +73,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // for now its a dummy request
     let dummyUser;
     if(phone === '912345678' && password === 'admin') {
-      dummyUser = { phone, firstName: "John", lastName: "Doe", role: PostalUserRole.master } 
+      dummyUser = { id: (Math.random() * 1000).toString(), phone, firstName: "John", lastName: "Doe", role: PostalUserRole.master } 
     } else if (phone === '912345679' && password === 'employee') {
-      dummyUser = { phone, firstName: "Jane", lastName: "Doe", role: PostalUserRole.Limd_yalew } 
+      dummyUser = { id: (Math.random() * 1000).toString(), phone, firstName: "Jane", lastName: "Doe", role: PostalUserRole.Limd_yalew } 
     } else if (phone === '912345670' && password === 'basic') {
-      dummyUser = { phone, firstName: "Jill", lastName: "Doe", role: PostalUserRole.basic }
+      dummyUser = { id: (Math.random() * 1000).toString(), phone, firstName: "Jill", lastName: "Doe", role: PostalUserRole.basic }
     } else {
       return Promise.reject('Invalid credentials');
     }

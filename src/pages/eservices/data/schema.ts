@@ -11,6 +11,10 @@ export const taskSchema = z.object({
   priority: z.string(),
   phoneNumber: z.string(),
   trackingNumber: z.string(),
+  source: z.object({
+    name: z.string(),
+    icon: z.string(),
+  }),
 })
 
 export enum TaskCategory {
