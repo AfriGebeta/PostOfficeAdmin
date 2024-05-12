@@ -1,4 +1,4 @@
-import { PostalUser, PostalUserRole } from "@/hooks/authProvider"
+import { PostalUser } from "@/hooks/authProvider"
 
 export const users : PostalUser[] = [
   // { phone: '920702746', firstName: 'Jonathan', lastName: 'Tyler', role: PostalUserRole.master },
