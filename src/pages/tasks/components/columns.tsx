@@ -11,7 +11,6 @@ import { Button } from '@/components/custom/button'
 import { toast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { names } from '../data/tasks'
 import { EmployeeUser } from '@/pages/drivers'
 import {
   DropdownMenu,
@@ -165,6 +164,7 @@ export const columns: ColumnDef<Task>[] = [
       const [isLoading, setIsLoading] = useState(false)
       const [drivers, setDrivers] = useState<EmployeeUser[]>([])
       const [visibleStatus, setVisibleStatus] = useState("")
+      console.log(isLoading)
     const handleDriverFetch = () => {
       setIsLoading(true)
       //@ts-ignore
@@ -249,8 +249,12 @@ export const columns: ColumnDef<Task>[] = [
         const sendNotification = async (driver: EmployeeUser) => await axios.post(import.meta.env.VITE_API_URL + `/notification/send-notification`, {
           //@ts-ignore
           id: driver.id,
-          title: `You have been assigned to deliver the package row.original.id`,
-          body: `Please head over to the assigned location and pick up the package`
+          title: `You have been assigned to deliver the package ${row.original.id}`,
+          body: {
+            packageId: row.original.id,
+            status: 'assigned',
+            message: `You have been assigned to deliver the package ${row.original.id}`
+          }
       }).then((response) => {
         console.log(response)
         

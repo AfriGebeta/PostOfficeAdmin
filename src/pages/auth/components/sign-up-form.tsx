@@ -80,7 +80,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     });
   };
 
-    const [ drivers, setDrivers ] = useState<PostalUser[]>([])
+    const [ drivers ] = useState<PostalUser[]>([])
     const [profile, setProfile] = useState<PostalUser | null>(null)
     const [currentDriver, setCurrentDriver] = useState<PostalUser | null>(null)
 

@@ -41,7 +41,7 @@ export default function SignUp() {
                 </Link>
               </p>
             </div>
-            <SignUpForm onSubmitCallback={submitCallback}/>
+            <SignUpForm onSubmitCallback={submitCallback} isDriver={true}/>
             <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
               By creating an account, you agree to our{' '}
               <a
