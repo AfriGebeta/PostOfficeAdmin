@@ -204,7 +204,7 @@ export const columns: ColumnDef<Task>[] = [
               description: `Driver ${driver.firstName} ${driver.lastName} has been assigned to task ${row.original.trackingNumber}.`,
             })
             setVisibleStatus(driver.firstName + " " + driver.lastName)
-            window.location.reload();
+            // window.location.reload();
           }).catch(err => {
             console.error(err)
             toast({
@@ -226,7 +226,7 @@ export const columns: ColumnDef<Task>[] = [
       const sendSms = async (phoneNumber: string) => await axios.post(import.meta.env.VITE_API_URL + `/sendsms`, {
         //@ts-ignore
         YOUR_RECIPIENT: phoneNumber,
-        MESSAGE: `You have been assigned to deliver the package row.original.id`
+        MESSAGE: `You have been assigned to deliver the package ${row.original.id}`
     }).then((response) => {
       console.log(response)
       if(response.data.acknowledge === 'success'){

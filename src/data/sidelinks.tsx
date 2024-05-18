@@ -178,12 +178,12 @@ const adminSidelinks: SideLink[] = [
     href: '/drivers',
     icon: <IconUser size={18} />,
   },
-  {
-    title: 'Mail',
-    label: '',
-    href: '/mail',
-    icon: <IconMail size={18} />,
-  },
+  // {
+  //   title: 'Mail',
+  //   label: '',
+  //   href: '/mail',
+  //   icon: <IconMail size={18} />,
+  // },
   {
     title: 'Tasks',
     label: '',
