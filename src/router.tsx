@@ -107,7 +107,7 @@ const router = createBrowserRouter([
       {
         path: 'branches',
         lazy: async () => ({
-          Component: (await import('@/components/coming-soon')).default,
+          Component: (await import('@/pages/branches')).default,
         }),
       },
       {

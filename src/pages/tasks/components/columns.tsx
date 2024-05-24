@@ -55,29 +55,29 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
 
-  {
-    accessorKey: 'priority',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Priority' />
-    ),
-    cell: () => {
-      // get a random priority
-      const label = priorities[Math.floor(Math.random() * priorities.length)]
-      return (
-        <>
-          {label && (
-            <div className='flex flex-row'>
-              <label.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-              <Badge variant='outline'>{label.label}</Badge>
-            </div>
-          )}
-        </>
-      )
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-  },
+  // {
+  //   accessorKey: 'priority',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Priority' />
+  //   ),
+  //   cell: () => {
+  //     // get a random priority
+  //     const label = priorities[Math.floor(Math.random() * priorities.length)]
+  //     return (
+  //       <>
+  //         {label && (
+  //           <div className='flex flex-row'>
+  //             <label.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+  //             <Badge variant='outline'>{label.label}</Badge>
+  //           </div>
+  //         )}
+  //       </>
+  //     )
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id))
+  //   },
+  // },
   {
     accessorKey: 'from',
     header: ({ column }) => (

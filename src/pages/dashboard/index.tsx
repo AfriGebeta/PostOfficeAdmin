@@ -21,7 +21,7 @@ export default function Dashboard() {
       {/* ===== Top Heading ===== */}
       <LayoutHeader>
         {/* <TopNav links={topNav} /> */}
-        <Search />
+        {/* <Search /> */}
         <div className='ml-auto flex items-center space-x-4'>
           <ThemeSwitch />
           <UserNav />
