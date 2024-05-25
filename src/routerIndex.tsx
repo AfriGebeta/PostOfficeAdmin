@@ -18,7 +18,8 @@ const RouterIndex = () => {
       if (result) {
         localUser = JSON.parse(result)
         console.log('Local user:', localUser)
-        setUser(localUser)
+        console.log("setting user to 0000", {...localUser, role: localUser.Employee[0].permissionLevel})
+        setUser({...localUser, role: localUser.Employee.permissionLevel})
       }
     }
     if (localUser) {

@@ -54,7 +54,7 @@ export const statuses = [
 
 export const generateStatus = (statusText: string) => {
   switch (statusText) {
-    case "pickedUp":
+    case "pickedup":
       return {
         value: 'pickedup',
         label: 'Picked up',
