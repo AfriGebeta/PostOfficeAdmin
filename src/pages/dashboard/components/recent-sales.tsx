@@ -1,17 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export function RecentSales() {
-
-  const names = [
-    "Alemu Bekele",
-    "Yohannes Dinku",
-    "Mulugeta Zeleke",
-    "Almaz Dinku",
-    "Genet Tadesse",
-    "Tesfaye Bekele",
-    "Haile Bekele",
-    "Dawit Dinku"
-  ];
   return (
     <div className='space-y-8'>
       <div className='flex items-center'>

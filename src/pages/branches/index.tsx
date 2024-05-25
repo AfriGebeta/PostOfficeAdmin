@@ -1,4 +1,3 @@
-import { Search } from '@/components/search'
 import ThemeSwitch from '@/components/theme-switch'
 import { UserNav } from '@/components/user-nav'
 import { Layout, LayoutBody, LayoutHeader } from '@/components/custom/layout'
@@ -8,7 +7,7 @@ import { useAuth } from '@/hooks/authProvider'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css' // Import Leaflet CSS
 import { Button } from '@/components/ui/button'
 import L from 'leaflet'
@@ -28,13 +27,8 @@ export default function Branches() {
   const { user } = useAuth()
   const [ branches, setBranches ] = useState<Branch[]>([])
   const defaultLocation = { lat: 9.145, lng: 40.4897 }; // Ethiopia's coordinates
-  const [currentLocation, setCurrentLocation] = useState<any>([9.019363454825323, 38.802153782900255]);
   const [updating, setUpdating] = useState<Branch>();
 
-  // Function to handle the user's current position
-  const showPosition = (position: any) => {
-    setCurrentLocation([position.coords.latitude, position.coords.longitude]);
-  };
   const icon = new L.Icon({
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
     iconSize: [25, 41],
@@ -56,15 +50,6 @@ export default function Branches() {
       console.error(error);
     }
   };
-
-  function LocationMarker({ setLocation }: { setLocation: (location: { lat: number; lng: number }) => void }) {
-    useMapEvents({
-      click(e) {
-        setLocation(e.latlng);
-      },
-    });
-    return null;
-  }
   
   const handleTaskFetch = async () => {
     console.log("getting Branches -------------")

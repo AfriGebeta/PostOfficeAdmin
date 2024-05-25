@@ -43,8 +43,8 @@ const initialPostalUserState: PostalUser | null = null;
 const AuthContext = createContext<AuthContextType>({
   user: initialPostalUserState,
   setUser: () => {},
-  login: (phone: string, password: string) => new Promise(() => {}),
-  register: (data: {
+  login: (_phone: string, _password: string) => new Promise(() => {}),
+  register: (_data: {
     firstName: string;
     lastName: string;
     phoneNumber: string;
