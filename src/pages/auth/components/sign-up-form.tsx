@@ -127,7 +127,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
  
     
     const createDriver = async () => {
-      let createDriver = await axios.post(import.meta.env.VITE_API_URL + '/branch', {
+      let createDriver = await axios.post(import.meta.env.VITE_API_URL + '/employee', {
         profileId: profile?.id,
         branchId: branches[0].id,
         isDriver: props.isDriver,

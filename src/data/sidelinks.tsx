@@ -253,6 +253,7 @@ const userSidelinks: SideLink[] = [
 ]
 
 export const getSideLinks = (role: string | undefined) => {
+  console.log("checking role",{role}, JSON.stringify(Object.values(PostalUserRole)))
   switch (role) {
     case PostalUserRole.owner:
       return sidelinks
