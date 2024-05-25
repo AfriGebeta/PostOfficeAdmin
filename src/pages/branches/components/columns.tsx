@@ -3,13 +3,13 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from './data-table-column-header'
 
-import { PostalUser } from '@/hooks/authProvider'
-import { Button } from '@/components/custom/button'
-import { toast } from '@/components/ui/use-toast'
-import { useState } from 'react'
-
 import axios from 'axios'
-export const columns: ColumnDef<PostalUser>[] = [
+import { toast } from '@/components/ui/use-toast'
+import { Button } from '@/components/custom/button'
+import { useState } from 'react'
+import { Branch } from '..'
+
+export const columns: ColumnDef<Branch>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -40,50 +40,33 @@ export const columns: ColumnDef<PostalUser>[] = [
       <DataTableColumnHeader column={column} title='Details' />
     ),
     cell: ({ row }) => {
-      const employeeName = row.original.firstName + ' ' + row.original.lastName
+
       return (
-        <div className='flex flex-row space-x-2'>
-          <img
-                src={`https://api.dicebear.com/8.x/lorelei/svg?seed=${employeeName}`}
-                alt={employeeName}
-                className='h-8 w-8 rounded-full'
-              />
-          <span className='max-w-32 truncate font-medium sm:max-w-72 md:max-w-[31rem]'>
-            {employeeName}
-          </span>
-        </div>
-      )
-    },
-  },
-  {
-    accessorKey: 'phoneNumber',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Phone Number' />
-    ),
-    //@ts-ignore
-    cell: ({ row }) => <div>{"+251 " + row.original.phoneNumber}</div>,
-    
+      
+      <div className='flex items-center'>
+        <span>{row.original.name}</span>
+      </div>
+    )},
   },
   {
     accessorKey: 'delete',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Delete Employee' />
+      <DataTableColumnHeader column={column} title='Delete Branch' />
     ),
    //@ts-ignore
    cell: ({ row }) => {
     const [isLoading, setIsLoading] = useState(false)
-    const handleEmployeeDelete = () => {
-      setIsLoading(true)
+    const handleBranchDelete = () => {
       //@ts-ignore
-      axios.delete(import.meta.env.VITE_API_URL + "/employee?id=" + row.original.employeeId).then(res => {
+      axios.delete(import.meta.env.VITE_API_URL + "/branch?id=" + row.original.id).then(res => {
         console.log(res.data, "from delete");
         setIsLoading(false)
         toast({
-          title: 'Employee deleted!',
-          description: `Employee ${row.original.firstName} ${row.original.lastName} has been deleted.`,
+          title: 'Branch deleted!',
+          description: `Branch ${row.original.name} has been deleted.`,
         })
         window.location.reload();
-      }).catch((err: unknown) => {
+      }).catch(err => {
         console.error(err)
         setIsLoading(false)
         toast({
@@ -94,7 +77,7 @@ export const columns: ColumnDef<PostalUser>[] = [
     };
       return (
         <Button
-          onClick={handleEmployeeDelete}
+          onClick={handleBranchDelete}
           loading={isLoading}
         >
           Delete

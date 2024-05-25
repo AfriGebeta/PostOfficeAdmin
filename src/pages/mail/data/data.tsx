@@ -4,9 +4,9 @@ import {
   ArrowUpIcon,
   CheckCircledIcon,
   CircleIcon,
+  CrossCircledIcon,
   StopwatchIcon,
 } from '@radix-ui/react-icons'
-import { IconCircle0Filled } from '@tabler/icons-react'
 
 export const labels = [
   {
@@ -25,26 +25,31 @@ export const labels = [
 
 export const statuses = [
   {
-    value: 'withUser',
-    label: 'withUser',
+    value: 'withuser',
+    label: 'withuser',
     icon: StopwatchIcon,
+    color: 'blue',
   },
   {
     value: 'pickedup',
     label: 'Picked up',
     icon: CircleIcon,
+    color: 'grey'
   },
   {
     value: 'station',
     label: 'Station',
-    icon: IconCircle0Filled,
+    icon: CrossCircledIcon,
+    color: 'red'
   },
   {
     value: 'delivered',
     label: 'Delivered',
     icon: CheckCircledIcon,
+    color: 'green'
   },
 ]
+
 
 export const priorities = [
   {

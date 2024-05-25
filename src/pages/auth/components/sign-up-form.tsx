@@ -1,3 +1,15 @@
+"use client"
+ 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 import { HTMLAttributes, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -83,6 +95,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     const [ drivers ] = useState<PostalUser[]>([])
     const [profile, setProfile] = useState<PostalUser | null>(null)
     const [currentDriver, setCurrentDriver] = useState<PostalUser | null>(null)
+    const [position, setPosition] = useState("BASIC")
 
     const createProfile = async () => {
       let fetchDrivers = await axios.post(import.meta.env.VITE_API_URL + '/profile/signup', {
@@ -118,7 +131,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         profileId: profile?.id,
         branchId: branches[0].id,
         isDriver: props.isDriver,
-        permissionLevel: PostalUserRole.Limd_yalew
+        permissionLevel: PermissionLevel[position as keyof typeof PermissionLevel]
       }).then(res => {
         setCurrentDriver(res.data)
       }).catch((err: unknown) => {
@@ -161,6 +174,14 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
       props.onSubmitCallback()
     }
   }, [currentDriver])
+
+  enum PermissionLevel {
+   Basic="BASIC",
+   Junior="LEMAJ",
+   Intermediate="LIMDYALEW",
+   Senior="MASTER",
+   Manager="OWNER",
+  }
 
 
   return (
@@ -222,6 +243,24 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 </FormItem>
               )}
             />
+            <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Select Employee Permission Level</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Permission Level</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+          {
+            Object.keys(PermissionLevel).map((permissionLevel) => (
+              <DropdownMenuRadioItem key={permissionLevel} value={permissionLevel}>
+                {permissionLevel}
+              </DropdownMenuRadioItem>
+            ))
+          }
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
             <Button className='mt-2' loading={isLoading}>
               Create Account
             </Button>

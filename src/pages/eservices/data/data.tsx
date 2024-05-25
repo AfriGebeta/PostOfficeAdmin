@@ -5,7 +5,6 @@ import {
   CheckCircledIcon,
   CircleIcon,
   CrossCircledIcon,
-  QuestionMarkCircledIcon,
   StopwatchIcon,
 } from '@radix-ui/react-icons'
 
@@ -23,34 +22,75 @@ export const labels = [
     label: 'Documentation',
   },
 ]
-
+/*
+ withuser , pickedup , station  , delivered
+*/
 export const statuses = [
   {
-    value: 'waiting',
-    label: 'Waiting',
+    value: 'withuser',
+    label: 'withuser',
     icon: StopwatchIcon,
+    color: 'blue',
   },
   {
-    value: 'en-route',
-    label: 'En Route',
+    value: 'pickedup',
+    label: 'Picked up',
     icon: CircleIcon,
+    color: 'grey'
+  },
+  {
+    value: 'station',
+    label: 'Station',
+    icon: CrossCircledIcon,
+    color: 'red'
   },
   {
     value: 'delivered',
     label: 'Delivered',
     icon: CheckCircledIcon,
+    color: 'green'
   },
-  {
-    value: 'canceled',
-    label: 'Canceled',
-    icon: CrossCircledIcon,
-  },
-  {
-    value: 'lost',
-    label: 'Lost',
-    icon: QuestionMarkCircledIcon,
-  }
 ]
+
+export const generateStatus = (statusText: string) => {
+  switch (statusText) {
+    case "pickedup":
+      return {
+        value: 'pickedup',
+        label: 'Picked up',
+        icon: CircleIcon,
+        color: 'grey'
+      }
+    case "withUser" : 
+      return {
+        value: 'withUser',
+        label: 'withUser',
+        icon: StopwatchIcon,
+        color: 'blue'
+      }
+    case "delivered":
+      return {
+        value: 'delivered',
+        label: 'Delivered',
+        icon: CheckCircledIcon,
+        color: 'green'
+      }
+    case "station": 
+      return {
+        value: 'station',
+        label: 'Station',
+        icon: CrossCircledIcon,
+        color: 'red'
+      }
+    default:
+      return {
+        value: 'withUser',
+        label: 'withUser',
+        icon: StopwatchIcon,
+        color: 'blue'
+      };
+  }
+}
 
 export const priorities = [
   {

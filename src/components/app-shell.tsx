@@ -1,12 +1,13 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from './sidebar'
 import useIsCollapsed from '@/hooks/use-is-collapsed'
-import { useAuth } from '@/hooks/authProvider'
+import { PostalUserRole, useAuth } from '@/hooks/authProvider'
 import { useEffect } from 'react'
 
 export default function AppShell() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
-  const { user } = useAuth()
+  const { user, setUser } = useAuth()
+  const navigator = useNavigate()
 
   useEffect(() => {
     console.log('User:', user, "useEffect triggered")
@@ -14,7 +15,35 @@ export default function AppShell() {
       console.log('User is logged in:', user)
     }else{
       console.log('User is not logged in')
-      // navigate('/sign-in')
+      let localUser
+    if (user) {
+      localUser = user
+    } else {
+      const result = localStorage.getItem('user')
+      if (result) {
+        localUser = JSON.parse(result)
+        console.log('Local user:', localUser)
+        console.log("setting user to 0000", {...localUser, role: localUser.Employee[0].permissionLevel})
+        setUser({...localUser, role: localUser.Employee[0].permissionLevel})
+      }
+    }
+    if (localUser) {
+      switch (localUser?.Employee[0].permissionLevel) {
+        case PostalUserRole.master:
+          navigator('/dashboard')
+          break
+        case PostalUserRole.Limd_yalew:
+          navigator('/mail')
+          break
+        case PostalUserRole.basic:
+          navigator('/403')
+          break
+        default:
+          navigator('/welcome')
+      }
+    } else {
+      navigator('/sign-in')
+    }
     }
   }
   , [user])

@@ -10,7 +10,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
-import SendNew from '../SendNew'
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
@@ -21,8 +20,6 @@ export function DataTableViewOptions<TData>({
 }: DataTableViewOptionsProps<TData>) {
   return (
     <DropdownMenu>
-      <div className='flex flex-row gap-4 items-center'>
-      <SendNew />
       <DropdownMenuTrigger asChild>
         <Button
           variant='outline'
@@ -33,7 +30,6 @@ export function DataTableViewOptions<TData>({
           View
         </Button>
       </DropdownMenuTrigger>
-      </div>
       <DropdownMenuContent align='end' className='w-[150px]'>
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />

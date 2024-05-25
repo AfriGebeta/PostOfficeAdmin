@@ -27,58 +27,67 @@ export const labels = [
 */
 export const statuses = [
   {
-    value: 'withUser',
-    label: 'withUser',
+    value: 'withuser',
+    label: 'withuser',
     icon: StopwatchIcon,
+    color: 'blue',
   },
   {
     value: 'pickedup',
     label: 'Picked up',
     icon: CircleIcon,
+    color: 'grey'
   },
   {
     value: 'station',
     label: 'Station',
     icon: CrossCircledIcon,
+    color: 'red'
   },
   {
     value: 'delivered',
     label: 'Delivered',
     icon: CheckCircledIcon,
+    color: 'green'
   },
 ]
 
 export const generateStatus = (statusText: string) => {
   switch (statusText) {
-    case "pickedUp":
+    case "pickedup":
       return {
         value: 'pickedup',
         label: 'Picked up',
         icon: CircleIcon,
+        color: 'grey'
       }
     case "withUser" : 
       return {
         value: 'withUser',
         label: 'withUser',
         icon: StopwatchIcon,
+        color: 'blue'
       }
     case "delivered":
       return {
         value: 'delivered',
         label: 'Delivered',
         icon: CheckCircledIcon,
+        color: 'green'
       }
     case "station": 
       return {
         value: 'station',
         label: 'Station',
         icon: CrossCircledIcon,
+        color: 'red'
       }
     default:
       return {
         value: 'withUser',
         label: 'withUser',
         icon: StopwatchIcon,
+        color: 'blue'
       };
   }
 }

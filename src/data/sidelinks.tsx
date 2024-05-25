@@ -178,12 +178,12 @@ const adminSidelinks: SideLink[] = [
     href: '/drivers',
     icon: <IconUser size={18} />,
   },
-  {
-    title: 'Mail',
-    label: '',
-    href: '/mail',
-    icon: <IconMail size={18} />,
-  },
+  // {
+  //   title: 'Mail',
+  //   label: '',
+  //   href: '/mail',
+  //   icon: <IconMail size={18} />,
+  // },
   {
     title: 'Tasks',
     label: '',
@@ -253,6 +253,7 @@ const userSidelinks: SideLink[] = [
 ]
 
 export const getSideLinks = (role: string | undefined) => {
+  console.log("checking role",{role}, JSON.stringify(Object.values(PostalUserRole)))
   switch (role) {
     case PostalUserRole.owner:
       return sidelinks

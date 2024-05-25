@@ -55,29 +55,29 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
 
-  {
-    accessorKey: 'priority',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Priority' />
-    ),
-    cell: () => {
-      // get a random priority
-      const label = priorities[Math.floor(Math.random() * priorities.length)]
-      return (
-        <>
-          {label && (
-            <div className='flex flex-row'>
-              <label.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-              <Badge variant='outline'>{label.label}</Badge>
-            </div>
-          )}
-        </>
-      )
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-  },
+  // {
+  //   accessorKey: 'priority',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Priority' />
+  //   ),
+  //   cell: () => {
+  //     // get a random priority
+  //     const label = priorities[Math.floor(Math.random() * priorities.length)]
+  //     return (
+  //       <>
+  //         {label && (
+  //           <div className='flex flex-row'>
+  //             <label.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+  //             <Badge variant='outline'>{label.label}</Badge>
+  //           </div>
+  //         )}
+  //       </>
+  //     )
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id))
+  //   },
+  // },
   {
     accessorKey: 'from',
     header: ({ column }) => (
@@ -204,7 +204,7 @@ export const columns: ColumnDef<Task>[] = [
               description: `Driver ${driver.firstName} ${driver.lastName} has been assigned to task ${row.original.trackingNumber}.`,
             })
             setVisibleStatus(driver.firstName + " " + driver.lastName)
-            window.location.reload();
+            // window.location.reload();
           }).catch(err => {
             console.error(err)
             toast({
@@ -226,7 +226,7 @@ export const columns: ColumnDef<Task>[] = [
       const sendSms = async (phoneNumber: string) => await axios.post(import.meta.env.VITE_API_URL + `/sendsms`, {
         //@ts-ignore
         YOUR_RECIPIENT: phoneNumber,
-        MESSAGE: `You have been assigned to deliver the package row.original.id`
+        MESSAGE: `You have been assigned to deliver the package ${row.original.id}`
     }).then((response) => {
       console.log(response)
       if(response.data.acknowledge === 'success'){

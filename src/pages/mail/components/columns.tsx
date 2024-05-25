@@ -46,30 +46,30 @@ export const columns: ColumnDef<Task>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: 'priority',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Priority' />
-    ),
-    cell: ({ row }) => {
-      const label = priorities.find(
-        (label) => label.value === row.original.priority
-      )
-      return (
-        <>
-          {label && (
-            <div className='flex flex-row'>
-              <label.icon className='mr-2 h-4 w-4 text-muted-foreground' />
-              <Badge variant='outline'>{label?.label}</Badge>
-            </div>
-          )}
-        </>
-      )
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-  },
+  // {
+  //   accessorKey: 'priority',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Priority' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const label = priorities.find(
+  //       (label) => label.value === row.original.priority
+  //     )
+  //     return (
+  //       <>
+  //         {label && (
+  //           <div className='flex flex-row'>
+  //             <label.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+  //             <Badge variant='outline'>{label?.label}</Badge>
+  //           </div>
+  //         )}
+  //       </>
+  //     )
+  //   },
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id))
+  //   },
+  // },
   {
     accessorKey: 'details',
     header: ({ column }) => (

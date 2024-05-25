@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { generateStatus, statuses } from '../data/data'
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import { toast } from '@/components/ui/use-toast'
 
@@ -28,10 +28,10 @@ export function DataTableRowActions<TData>({
 // assign a random status to the task
 const apiUrl = import.meta.env.VITE_API_URL
 
-    const sendSms = async (phoneNumber: string) => await axios.post(apiUrl + `/sendsms`, {
+    const sendSms = async (phoneNumber: string, newStatus: { value: string }) => await axios.post(apiUrl + `/sendsms`, {
       //@ts-ignore
       YOUR_RECIPIENT: phoneNumber,
-      MESSAGE: `The status of your package has been updated to ${visibleStatus.value}`
+      MESSAGE: `The status of your package has been updated to ${newStatus.value}`
   }).then((response) => {
     console.log(response)
     if(response.data.acknowledge === 'success'){
@@ -78,6 +78,7 @@ const apiUrl = import.meta.env.VITE_API_URL
   const handleStatusChange = (givenStatus: any) => {
     const newStatus = statuses.find((status) => status.value === givenStatus.value)
     if(newStatus){
+      console.log("setting status", {newStatus}, "selected status", {givenStatus})
       setVisibleStatus(generateStatus(newStatus.value))
     }
     // send a get request to https://api.afromessage.com/api/send?from={IDENTIFIER_ID}&sender={YOUR_SENDER_NAME}&to={YOUR_RECIPIENT}&message={YOUR_MESSAGE}&callback={YOUR_CALLBACK}
@@ -87,11 +88,15 @@ const apiUrl = import.meta.env.VITE_API_URL
     
     console.log({row: row.original})  
     //@ts-ignore
-   sendSms(row.original.sentTo.phoneNumber)
+   sendSms(row.original.sentTo.phoneNumber, newStatus)
   //@ts-ignore
-   sendSms(row.original.sentFrom.phoneNumber)
+   sendSms(row.original.sentFrom.phoneNumber, newStatus)
   updatePackageStatus(givenStatus.value);
   }
+
+  useEffect(() => {
+    console.log("visibleStatus changed to", visibleStatus)
+  }, [visibleStatus])
 
   return (
     <DropdownMenu>
@@ -101,7 +106,7 @@ const apiUrl = import.meta.env.VITE_API_URL
           className='flex h-8 w-full flex-row items-center justify-start p-0 data-[state=open]:bg-muted'
         >
           {visibleStatus.icon && (
-            <visibleStatus.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+            <visibleStatus.icon className='mr-2 h-4 w-4 text-muted-foreground' color={visibleStatus.color} />
           )}
           <span>{visibleStatus.label}</span>
         </Button>
@@ -114,7 +119,7 @@ const apiUrl = import.meta.env.VITE_API_URL
               value={status.value}
               onClick={() => handleStatusChange(status)}
             >
-              <status.icon className='mr-2 h-4 w-4 text-muted-foreground' />
+              <status.icon className='mr-2 h-4 w-4 text-muted-foreground' color={status.color} />
               {status.label}
             </DropdownMenuRadioItem>
           ))}

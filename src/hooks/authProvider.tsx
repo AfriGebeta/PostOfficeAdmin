@@ -1,31 +1,37 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import axios from "axios";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 // Define PostalUserRoles
 // type PostalUserRole = 'basic' | 'lemaj' | 'Limd yalew' | 'master' | 'owner';
 export enum PostalUserRole {
-  basic = 'BASIC',
-  lemaj = 'LEMAJ',
-  Limd_yalew = 'LIMDYALEW',
-  master = 'MASTER',
-  owner = 'OWNER',
+  basic = "BASIC",
+  lemaj = "LEMAJ",
+  Limd_yalew = "LIMDYALEW",
+  master = "MASTER",
+  owner = "OWNER",
 }
 
 // Define user type
 export interface PostalUser {
-  id: string;
   phone: string;
-  firstName: string;
+  firstName: String;
   lastName: String;
   role: PostalUserRole;
-  isDriver?: boolean;
-  branch?: string;
+  id: string;
 }
 
 // Define context type
 interface AuthContextType {
   user: PostalUser | null;
   setUser: (PostalUser: PostalUser) => void;
-  login: (phone: string, password: string) => Promise<PostalUser>,
+  login: (phone: string, password: string) => Promise<PostalUser>;
+  register: (data: {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    password: string;
+    confirmPassword: string;
+  }) => Promise<PostalUser | null>;
   logout: () => Promise<void>;
   hasPostalUserRole: (PostalUserRole: PostalUserRole) => boolean;
 }
@@ -37,7 +43,14 @@ const initialPostalUserState: PostalUser | null = null;
 const AuthContext = createContext<AuthContextType>({
   user: initialPostalUserState,
   setUser: () => {},
-  login: () => new Promise(() => {}),
+  login: (phone: string, password: string) => new Promise(() => {}),
+  register: (data: {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    password: string;
+    confirmPassword: string;
+  }) => new Promise(() => {}),
   logout: () => new Promise(() => {}),
   hasPostalUserRole: () => false,
 });
@@ -51,42 +64,26 @@ interface AuthProviderProps {
 
 // AuthProvider component
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setPostalUser] = useState<PostalUser | null>(initialPostalUserState);
-  useEffect(() => {
-    let localUser
-    if (user) {
-      localUser = user
-    } else {
-      const result = localStorage.getItem('user')
-      if (result) {
-        localUser = JSON.parse(result)
-        console.log('Local user:', localUser)
-        setUser(localUser)
-      }
-    }
-  
-  }, [user])
+  const [user, setPostalUser] = useState<PostalUser | null>(
+    initialPostalUserState
+  );
 
   // Simulate login
-  const login = (phone: string, password: string) => {
+  const login = async (phone: string, password: string) => {
     // login request logic here
-    // for now its a dummy request
-    let dummyUser;
-    if(phone === '912345678' && password === 'admin') {
-      dummyUser = { id: (Math.random() * 1000).toString(), phone, firstName: "John", lastName: "Doe", role: PostalUserRole.master } 
-    } else if (phone === '912345679' && password === 'employee') {
-      dummyUser = { id: (Math.random() * 1000).toString(), phone, firstName: "Jane", lastName: "Doe", role: PostalUserRole.Limd_yalew } 
-    } else if (phone === '912345670' && password === 'basic') {
-      dummyUser = { id: (Math.random() * 1000).toString(), phone, firstName: "Jill", lastName: "Doe", role: PostalUserRole.basic }
-    } else {
-      return Promise.reject('Invalid credentials');
+    
+    const res = await axios.post(import.meta.env.VITE_API_URL + "/profile/login", {
+      phoneNumber: phone,
+      password,
+    });
+    if(res) {
+      console.log(res.data, "from login======");
+      setPostalUser({...res.data, role: res.data.Employee[0].permissionLevel});
+      //set localStorage
+      localStorage.setItem("user", JSON.stringify(res.data));
+      return res.data;
     }
-
-    capitalizeNames(dummyUser);
-    setPostalUser(dummyUser);
-    //set localStorage
-    localStorage.setItem('user', JSON.stringify(dummyUser));
-    return Promise.resolve(dummyUser);
+    throw new Error('Failed to login');
   };
 
   // Logout function
@@ -94,8 +91,39 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // logout request logic here
     setPostalUser(null);
     // remove localStorage
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
     return Promise.resolve();
+  };
+
+  // register user
+  const register = async (data: {
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    password: string;
+    confirmPassword: string;
+  }): Promise<PostalUser | null> => {
+    // register request logic here
+    const res = await axios
+      .post(import.meta.env.VITE_API_URL + "/profile/signup", {
+        ...data,
+        role: "ADMIN",
+        location: {
+          name: "Main",
+          coords: {
+            latitude: 9.0198,
+            longitude: 38.8017,
+          },
+        },
+      })
+    if(res) {
+      setPostalUser(res.data);
+        //set localStorage
+        localStorage.setItem("user", JSON.stringify(res.data));
+        return res.data;
+    }else{
+      throw new Error('Failed to register');
+    }
   };
 
   // Check if user has a certain PostalUserRole
@@ -108,14 +136,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setPostalUser(PostalUser);
   };
 
-  // capitalize the first letter of the name
-  const capitalizeNames = (user: PostalUser) => {
-    user.firstName = user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1);
-    user.lastName = user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1);
-  };
-
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout, hasPostalUserRole }}>
+    <AuthContext.Provider
+      value={{ user, setUser, login, register, logout, hasPostalUserRole }}
+    >
       {children}
     </AuthContext.Provider>
   );
