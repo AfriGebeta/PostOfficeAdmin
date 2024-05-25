@@ -1,17 +1,10 @@
-import { Card } from '@/components/ui/card'
-
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { toast } from '@/components/ui/use-toast'
 import { Button } from '@/components/custom/button'
 
-import postOfficeLogo from "../../assets/post_logo.png";
 import React from 'react'
 import { UserAuthForm } from './forms/user-auth-form'
 

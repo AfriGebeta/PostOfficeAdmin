@@ -2,14 +2,7 @@ import React, { useState, HTMLAttributes } from "react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { IconCalendar } from "@tabler/icons-react";
-import {
-  CardTitle,
-  CardDescription,
-  CardHeader,
-  CardContent,
-  CardFooter,
-  Card,
-} from "@/components/ui/card";
+
 import {
   Popover,
   PopoverContent,
@@ -38,7 +31,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
@@ -60,7 +52,7 @@ const formSchema = z.object({
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [trackingNumber, setTrackingNumber] = useState(
+  const [trackingNumber, _setTrackingNumber] = useState(
     "1Z9R5W90P22" + Math.floor(Math.random() * 100000)
   );
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -116,7 +108,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     },
   });
 
-  const [recipientName, setRecipientName] = useState("");
+  const [_recipientName, setRecipientName] = useState("");
 
   const [open, setOpen] = useState(false);
 

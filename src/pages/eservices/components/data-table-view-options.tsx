@@ -11,7 +11,6 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 import SendNew from '../SendNew'
-import { BulkUploadForm } from '../forms/uploadBulk'
 import BullkUpload from '../BulkUpload'
 
 interface DataTableViewOptionsProps<TData> {

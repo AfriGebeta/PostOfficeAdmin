@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useForm, FormProvider, useFormContext, Controller } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "@/components/ui/use-toast";
@@ -39,7 +39,7 @@ export function BulkUploadForm({ className, ...props }: BulkUploadFormProps) {
   });
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(_data: z.infer<typeof formSchema>) {
     const file = fileInputRef.current?.files?.[0];
     if (!file) {
       toast({

@@ -1,12 +1,10 @@
 import { Card } from '@/components/ui/card'
-import { SignUpForm } from './components/sign-up-form'
+
 
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { toast } from '@/components/ui/use-toast'

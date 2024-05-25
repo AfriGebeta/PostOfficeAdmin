@@ -27,7 +27,7 @@ import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
 import axios from 'axios'
-import { PostalUser, PostalUserRole } from '@/hooks/authProvider'
+import { PostalUser } from '@/hooks/authProvider'
 import { toast } from '@/components/ui/use-toast'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {

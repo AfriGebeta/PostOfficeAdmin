@@ -7,7 +7,6 @@ import { useMapEvents } from "react-leaflet"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,24 +18,6 @@ import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css' // Import Leaflet CSS
-const profileFormSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  phone: z.string(),
-  password: z.string(),
-})
-
-type ProfileFormValues = z.infer<typeof profileFormSchema>
-
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  firstName: '',
-  lastName: '',
-
-  phone: '',
-  password: '',
-}
-
 
 import L from 'leaflet'
 
@@ -93,15 +74,8 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
   const [locationId, setLocationId] = useState<string | null>(null);
   const [currentBranch, setCurrentBranch] = useState<Branch | null>(null);
   const [isMainOffice, setIsMainOffice] = useState(false);
-  const [position, setPosition] = useState("BASIC")
 
   const defaultLocation = { lat: 9.145, lng: 40.4897 }; // Ethiopia's coordinates
-  const [currentLocation, setCurrentLocation] = useState<any>([9.019363454825323, 38.802153782900255]);
-
-  // Function to handle the user's current position
-  const showPosition = (position: any) => {
-    setCurrentLocation([position.coords.latitude, position.coords.longitude]);
-  };
   const icon = new L.Icon({
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
     iconSize: [25, 41],
