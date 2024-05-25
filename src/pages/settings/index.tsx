@@ -1,7 +1,5 @@
 import { Outlet } from 'react-router-dom'
 import {
-  IconBrowserCheck,
-  IconExclamationCircle,
   IconNotification,
   IconPalette,
   IconTool,
@@ -71,14 +69,14 @@ const sidebarNavItems = [
     icon: <IconNotification size={18} />,
     href: '/settings/notifications',
   },
-  {
-    title: 'Display',
-    icon: <IconBrowserCheck size={18} />,
-    href: '/settings/display',
-  },
-  {
-    title: 'Error Example',
-    icon: <IconExclamationCircle size={18} />,
-    href: '/settings/error-example',
-  },
+  // {
+  //   title: 'Display',
+  //   icon: <IconBrowserCheck size={18} />,
+  //   href: '/settings/display',
+  // },
+  // {
+  //   title: 'Error Example',
+  //   icon: <IconExclamationCircle size={18} />,
+  //   href: '/settings/error-example',
+  // },
 ]

@@ -77,6 +77,7 @@ export default function Branches() {
 
   return (
     <Layout>
+      <p className='hidden'>{JSON.stringify(branchLocations)}</p>
       {/* ===== Top Heading ===== */}
       <LayoutHeader>
         {/* <Search /> */}
