@@ -63,9 +63,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   };
 
   const sendNotification = async (
-    trackingNumber: string,
+    _trackingNumber: string,
     packageId: string,
-    status: string
+    _status: string
   ) =>
     await axios
       .post(import.meta.env.VITE_API_URL + `/notification/send-notification`, {
