@@ -247,11 +247,11 @@ export const columns: ColumnDef<Task>[] = [
         const sendNotification = async (driver: EmployeeUser) => await axios.post(import.meta.env.VITE_API_URL + `/notification/send-notification`, {
           //@ts-ignore
           id: driver.id,
-          title: `You have been assigned to deliver the package ${row.original.id}`,
+          title: `Package assigned`,
           body: {
             packageId: row.original.id,
             status: 'assigned',
-            message: `You have been assigned to deliver the package ${row.original.id}`
+            message: `You have been assigned to deliver the package`
           }
       }).then((response) => {
         console.log(response)
