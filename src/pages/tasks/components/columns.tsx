@@ -224,7 +224,7 @@ export const columns: ColumnDef<Task>[] = [
       const sendSms = async (phoneNumber: string) => await axios.post(import.meta.env.VITE_API_URL + `/sendsms`, {
         //@ts-ignore
         YOUR_RECIPIENT: phoneNumber,
-        MESSAGE: `You have been assigned to deliver the package ${row.original.id}`
+        MESSAGE: `You have been assigned to deliver the package https://postoffice.gebeta.app/deliveries/${row.original.id}`
     }).then((response) => {
       console.log(response)
       if(response.data.acknowledge === 'success'){
@@ -247,11 +247,11 @@ export const columns: ColumnDef<Task>[] = [
         const sendNotification = async (driver: EmployeeUser) => await axios.post(import.meta.env.VITE_API_URL + `/notification/send-notification`, {
           //@ts-ignore
           id: driver.id,
-          title: `Package assigned`,
+          title: `ለጥቅል ተመድበዋል`,
           body: {
             packageId: row.original.id,
             status: 'assigned',
-            message: `You have been assigned to deliver the package`
+            message: `ጥቅል እንዲያደርሱ ተመድበዋል`
           }
       }).then((response) => {
         console.log(response)

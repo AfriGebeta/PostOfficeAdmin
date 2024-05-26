@@ -71,12 +71,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       .post(import.meta.env.VITE_API_URL + `/notification/send-notification`, {
         //@ts-ignore
         id: driver.id,
-        title: `a package has been sent`,
-        body: {
-          packageId: packageId,
-          status: status,
-          message: `a package has been sent: tracking number ${trackingNumber}`,
-        },
+          title: `ለጥቅል ተመድበዋል`,
+          body: {
+            packageId: packageId,
+            status: 'assigned',
+            message: `ጥቅል እንዲያደርሱ ተመድበዋል`
+          }
       })
       .then((response) => {
         console.log(response);
