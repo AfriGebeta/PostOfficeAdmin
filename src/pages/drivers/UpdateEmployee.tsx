@@ -25,6 +25,8 @@ export default function UpdateEmployee() {
     })
 
     setShowDialog(false)
+
+    window.location.reload()
   }
   return (
     <>

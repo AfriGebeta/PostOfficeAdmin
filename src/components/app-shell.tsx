@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Sidebar from './sidebar'
 import useIsCollapsed from '@/hooks/use-is-collapsed'
-import {  useAuth } from '@/hooks/authProvider'
+import {  PostalUserRole, useAuth } from '@/hooks/authProvider'
 import { useEffect } from 'react'
 
 export default function AppShell() {
@@ -23,7 +23,7 @@ export default function AppShell() {
         localUser = JSON.parse(result)
         console.log('Local user:', localUser)
         console.log("setting user to 0000", {...localUser, role: localUser.Employee[0].permissionLevel})
-        setUser({...localUser, role: localUser.Employee[0].permissionLevel})
+        setUser({...localUser, role: localUser.Employee ? localUser.Employee[0].permissionLevel : PostalUserRole.lemaj})
       }
     }
     }

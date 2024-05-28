@@ -348,4 +348,32 @@ export const columns: ColumnDef<Task>[] = [
       return value.includes(row.getValue(id))
     },
   },
+  {
+    accessorKey: 'delete',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Delete Branch' />
+    ),
+    //@ts-ignore
+    cell: ({ row }) => {
+      const [isLoading, setIsLoading] = useState(false)
+      const handleBranchDelete = () => {
+        setIsLoading(true)
+        setTimeout(() => {
+          setIsLoading(false)
+          toast({
+            title: 'Task deleted!',
+            description: `Task ${row.original.id} has been deleted.`,
+          })
+        }, 3000)
+      }
+      return (
+        <Button
+          onClick={handleBranchDelete}
+          loading={isLoading}
+        >
+          Delete
+        </Button>
+      )
+    },
+  }
 ]

@@ -245,7 +245,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-2">
-            <FormField
+            <div>
+              <FormField
               control={form.control}
               name="senderPhone"
               render={({ field }) => (
@@ -261,6 +262,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
+            {/* <Button onClick={() => {
+              if(user){
+                form.setValue('senderPhone', user?.phone);
+              }
+            }}>From PostOffice</Button> */}
             <FormField
               control={form.control}
               name="recipientPhone"
@@ -277,6 +283,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 </FormItem>
               )}
             />
+            </div>
             <FormField
               control={form.control}
               name="type"

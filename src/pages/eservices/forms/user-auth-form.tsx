@@ -23,8 +23,10 @@ import { cn } from '@/lib/utils'
 import axios from 'axios'
 import { PostalUser } from '@/hooks/authProvider'
 import { toast } from '@/components/ui/use-toast'
+import Nid from "../../../assets/nid.svg"
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {
+  onSubmitCallback: (service: EService) => void
 }
 
 type Branch = {
@@ -106,6 +108,12 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         toast({
           title: 'E-service created!',
           description: `Profile ${res.data.firstName} ${res.data.lastName} has been created.`,
+        })
+        props.onSubmitCallback({
+          name: res.data.firstName,
+          logo: Nid,
+          orgPhone: res.data.phoneNumber,
+          orgEmail: res.data.email
         })
        form.reset()
       }).catch((err: unknown) => {
@@ -269,6 +277,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
  */
 import { CardTitle, CardDescription, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { JSX } from 'react/jsx-runtime'
+import { EService } from ".."
 
 function APIKeyComponent() {
   const [apiKey, setApiKey] = useState<string>('a1b2c3d4e5f6g7h8i9j0') // ['a1b2c3d4e5f6g7h8i9j0']
