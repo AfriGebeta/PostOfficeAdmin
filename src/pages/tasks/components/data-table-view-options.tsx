@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 import SendNew from '../SendNew'
+import BullkUpload from '../BulkUpload'
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
@@ -22,6 +23,7 @@ export function DataTableViewOptions<TData>({
   return (
     <DropdownMenu>
       <div className='flex flex-row gap-4 items-center'>
+        <BullkUpload />
       <SendNew />
       <DropdownMenuTrigger asChild>
         <Button

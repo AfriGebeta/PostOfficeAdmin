@@ -176,12 +176,12 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
   }, [currentDriver])
 
   enum PermissionLevel {
-   Basic="BASIC",
-   Junior="LEMAJ",
-   Intermediate="LIMDYALEW",
-   Senior="MASTER",
-   Manager="OWNER",
-  }
+    //  Basic="BASIC",
+     Employee="LEMAJ",
+     Manager="LIMDYALEW",
+     Admin="MASTER",
+    //  Admin="OWNER",
+    }
 
 
   return (

@@ -7,10 +7,11 @@ import CreateEmployee from '../CreateBranches'
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
+  setCreating: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export function DataTableToolbar<TData>({
-  table,
+  table, setCreating
 }: DataTableToolbarProps<TData>) {
 
   return (
@@ -27,7 +28,7 @@ export function DataTableToolbar<TData>({
         
       </div>
       <div className='flex flex-row gap-2'>
-        <CreateEmployee />
+        <CreateEmployee setCreating={(creating: boolean) => setCreating(creating)}/>
       </div>
     </div>
   )

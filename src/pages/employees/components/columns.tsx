@@ -8,6 +8,7 @@ import axios from 'axios'
 import { toast } from '@/components/ui/use-toast'
 import { Button } from '@/components/custom/button'
 import { useState } from 'react'
+import UpdateEmployee from '../UpdateEmployee'
 
 
 export const columns: ColumnDef<PostalUser>[] = [
@@ -99,6 +100,19 @@ export const columns: ColumnDef<PostalUser>[] = [
         >
           Delete
         </Button>
+      )
+   },
+    
+  },{
+    accessorKey: 'update',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Update Employee' />
+    ),
+   //@ts-ignore
+   cell: ({ row }) => {
+    
+      return (
+        <UpdateEmployee />
       )
    },
     

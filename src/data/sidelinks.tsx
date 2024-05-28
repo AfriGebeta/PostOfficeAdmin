@@ -14,7 +14,6 @@ import {
   IconHexagonNumber4,
   IconLayoutDashboard,
   IconLocationBolt,
-  IconMail,
   IconMessages,
   IconRouteAltLeft,
   IconServerOff,
@@ -217,12 +216,33 @@ const adminSidelinks: SideLink[] = [
 ]
 
 const employeeSidelinks: SideLink[] = [
+  // {
+  //   title: 'Mail',
+  //   label: '',
+  //   href: '/mail',
+  //   icon: <IconMail size={18} />,
+  // },
   {
-    title: 'Mail',
+    title: 'Tasks',
     label: '',
-    href: '/mail',
-    icon: <IconMail size={18} />,
+    href: '/tasks',
+    icon: <IconChecklist size={18} />,
   },
+  {
+    title: 'Users',
+    label: '',
+    href: '/users',
+    icon: <IconUsers size={18} />,
+  },
+  // {
+  //   title: 'Other E-Sevices',
+  //   label: '',
+  //   href: '/other-services',
+  //   icon: <IconHexagon size={18} />,
+  // },
+]
+
+const intermedaiteSidelinks: SideLink[] = [
   {
     title: 'Tasks',
     label: '',
@@ -236,10 +256,16 @@ const employeeSidelinks: SideLink[] = [
     icon: <IconUsers size={18} />,
   },
   {
-    title: 'Other E-Sevices',
-    label: '',
-    href: '/other-services',
-    icon: <IconHexagon size={18} />,
+    title: "Employees",
+    label: "",
+    href: "/employeesFiltered",
+    icon: <IconUser size={18} />
+  },
+  {
+    title: "Drivers",
+    label: "",
+    href: "/driversFiltered",
+    icon: <IconUser size={18} />
   },
 ]
 
@@ -260,6 +286,8 @@ export const getSideLinks = (role: string | undefined) => {
     case PostalUserRole.master:
       return adminSidelinks
     case PostalUserRole.Limd_yalew:
+      return intermedaiteSidelinks
+    case PostalUserRole.lemaj:
       return employeeSidelinks
     case PostalUserRole.basic || undefined:
       return userSidelinks

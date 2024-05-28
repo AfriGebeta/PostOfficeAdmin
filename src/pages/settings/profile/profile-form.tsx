@@ -23,6 +23,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 
 const profileFormSchema = z.object({
   username: z
@@ -70,16 +71,17 @@ export default function ProfileForm() {
     name: 'urls',
     control: form.control,
   })
+  const [ isLoading, setIsLoading ] = useState(false)
 
-  function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  function onSubmit(_data: ProfileFormValues) {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+      toast({
+        title: 'Information updated!',
+        description: `Information updated`,
+      })
+    }, 3000)
   }
 
   return (
@@ -181,7 +183,7 @@ export default function ProfileForm() {
             Add URL
           </Button>
         </div>
-        <Button type='submit'>Update profile</Button>
+        <Button loading={isLoading} type='submit'>Update profile</Button>
       </form>
     </Form>
   )

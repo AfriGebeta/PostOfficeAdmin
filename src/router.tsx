@@ -81,9 +81,21 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: 'employeesFiltered',
+        lazy: async () => ({
+          Component: (await import('./pages/employeesFiltered')).default,
+        }),
+      },
+      {
         path: 'drivers',
         lazy: async () => ({
           Component: (await import('./pages/drivers')).default,
+        }),
+      },
+      {
+        path: 'driversFiltered',
+        lazy: async () => ({
+          Component: (await import('./pages/driversFiltered')).default,
         }),
       },
       {
@@ -95,7 +107,7 @@ const router = createBrowserRouter([
       {
         path: 'users',
         lazy: async () => ({
-          Component: (await import('@/pages/employees')).default,
+          Component: (await import('@/pages/users')).default,
         }),
       },
       {

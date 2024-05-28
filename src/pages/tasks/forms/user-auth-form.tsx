@@ -1,4 +1,4 @@
-import React, { useState, HTMLAttributes } from "react";
+import React, { useState, HTMLAttributes, useEffect } from "react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { IconCalendar } from "@tabler/icons-react";
@@ -36,7 +36,12 @@ import { Label } from "@/components/ui/label";
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 const formSchema = z.object({
-  phone: z
+  senderPhone: z
+    .string()
+    .min(1, { message: "Please enter a phone" })
+    .min(9, { message: "Phone number is not valid" })
+    .max(9, { message: "Phone number is not valid" }),
+  recipientPhone: z
     .string()
     .min(1, { message: "Please enter a phone" })
     .min(9, { message: "Phone number is not valid" })
@@ -61,6 +66,29 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const setSendTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTime(e.target.value);
   };
+  const sendSms = async (phoneNumber: string, message: string) => await axios.post(import.meta.env.VITE_API_URL + `/sendsms`, {
+    //@ts-ignore
+    YOUR_RECIPIENT: phoneNumber,
+    MESSAGE: message
+}).then((response) => {
+  console.log(response)
+  if(response.data.acknowledge === 'success'){
+    toast({
+      title: 'Message sent!',
+      description: 'A message has been sent to the recipient.',
+    })
+  } else {
+    toast({
+      title: 'Message failed to send',
+      description: `'The message failed to send.': ${response.data}`,
+    })
+  }}).catch((error) => {
+    console.error(error)
+    toast({
+      title: 'Message failed to send',
+      description: `'The message failed to send.': ${error.message}`,
+    })
+    });
 
   const sendNotification = async (
     _trackingNumber: string,
@@ -97,7 +125,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      phone: "",
+      senderPhone: "",
+      recipientPhone: "",
       type: "",
       killo: "",
       firstName: "",
@@ -118,19 +147,25 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       const res = await axios.get(import.meta.env.VITE_API_URL + "/profile");
 
       if (res.data) {
-        const filter = res.data.filter((user: any) => {
-          if (user.phoneNumber.toString() === data.phone) {
+        const sender = res.data.filter((user: any) => {
+          if (user.phoneNumber.toString() === data.senderPhone) {
+            return user;
+          }
+        });
+
+        const recipient = res.data.filter((user: any) => {
+          if (user.phoneNumber.toString() === data.recipientPhone) {
             return user;
           }
         });
 
         console.log("user", user);
 
-        if (!filter.length) {
+        if (!sender.length || !recipient.length) {
           setIsLoading(false);
           toast({
             title: "Failed to send package!",
-            description: `No user found with phone number ${data.phone}`,
+            description: `No user found with phone number ${!sender.length? data.senderPhone: data.recipientPhone}`,
           });
           return;
         }
@@ -152,8 +187,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             },
             type: data.type,
             fragile: false,
-            sentFromId: user?.id,
-            sentToId: filter[0].id,
+            sentFromId: sender[0].id,
+            sentToId: recipient[0].id,
           }
         );
 
@@ -162,6 +197,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           setRecipientName(`${data.firstName} ${data.lastName}`);
           form.reset();
           sendNotification(trackingNumber.toString(), result.data.id, "sent");
+          sendSms(data.recipientPhone, `Hello ${data.firstName} ${data.lastName}, you have a package with tracking number ${trackingNumber} from ${user?.firstName} ${user?.lastName} +251${user?.phone}. ETA: ${estimatedTime}`.toString());
+          sendSms(data.senderPhone, `Hello ${user?.firstName} ${user?.lastName}, you have sent a package with tracking number ${trackingNumber} to ${data.firstName} ${data.lastName} +251${data.recipientPhone}. ETA: ${estimatedTime}`.toString());
           toast({
             title: "Package sent successfully!",
             description: "You have successfully sent the package.",
@@ -194,6 +231,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
   }
 
+  const [estimatedTime, setEstimatedTime] = useState('');
+
+  useEffect(() => {
+    // Generate a random estimated time between 1 and 5 hours
+    const hours = Math.floor(Math.random() * 5) + 1;
+    const minutes = Math.floor(Math.random() * 60);
+    setEstimatedTime(`${hours}h ${minutes}m`);
+  }, []);
 
   return (
     <div className={cn("grid gap-6 p-5", className)} {...props}>
@@ -202,10 +247,26 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <div className="grid gap-2">
             <FormField
               control={form.control}
-              name="phone"
+              name="senderPhone"
               render={({ field }) => (
                 <FormItem className="space-y-1 flex flex-row gap-5 items-center justify-start">
-                  <FormLabel>Phone No.</FormLabel>
+                  <FormLabel>Sender Phone No.</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center">
+                      <p className="p-2 text-sm text-gray-400">+251</p>{" "}
+                      <Input placeholder="- - -  - -  - -  - -" {...field} />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="recipientPhone"
+              render={({ field }) => (
+                <FormItem className="space-y-1 flex flex-row gap-5 items-center justify-start">
+                  <FormLabel>Recipient Phone No.</FormLabel>
                   <FormControl>
                     <div className="flex items-center">
                       <p className="p-2 text-sm text-gray-400">+251</p>{" "}

@@ -13,7 +13,7 @@ import { Button } from '@/components/custom/button'
 import postOfficeLogo from "../../assets/post_logo.png";
 import React from 'react'
 
-export default function CreateBranch() {
+export default function CreateBranch({setCreating} : {setCreating: (creating: boolean) => void}){
   const [showDialog, setShowDialog] = React.useState(false)
 
   const handleSaveChanges = () => {
@@ -23,12 +23,18 @@ export default function CreateBranch() {
     })
 
     setShowDialog(false)
+    setCreating(false)
+  }
+
+  const setOpenChange = (open: boolean) => {
+    setShowDialog(open)
+    setCreating(open)
   }
   return (
     <>
-      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+      <Dialog open={showDialog} onOpenChange={setOpenChange}>
         <DialogTrigger asChild>
-          <Button variant='default'>Create</Button>
+          <Button variant='default' onClick={() => setCreating(true)}>Create</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

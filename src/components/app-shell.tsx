@@ -1,13 +1,12 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import Sidebar from './sidebar'
 import useIsCollapsed from '@/hooks/use-is-collapsed'
-import { PostalUserRole, useAuth } from '@/hooks/authProvider'
+import {  useAuth } from '@/hooks/authProvider'
 import { useEffect } from 'react'
 
 export default function AppShell() {
   const [isCollapsed, setIsCollapsed] = useIsCollapsed()
   const { user, setUser } = useAuth()
-  const navigator = useNavigate()
 
   useEffect(() => {
     console.log('User:', user, "useEffect triggered")
@@ -26,23 +25,6 @@ export default function AppShell() {
         console.log("setting user to 0000", {...localUser, role: localUser.Employee[0].permissionLevel})
         setUser({...localUser, role: localUser.Employee[0].permissionLevel})
       }
-    }
-    if (localUser) {
-      switch (localUser?.Employee[0].permissionLevel) {
-        case PostalUserRole.master:
-          navigator('/dashboard')
-          break
-        case PostalUserRole.Limd_yalew:
-          navigator('/mail')
-          break
-        case PostalUserRole.basic:
-          navigator('/403')
-          break
-        default:
-          navigator('/welcome')
-      }
-    } else {
-      navigator('/sign-in')
     }
     }
   }

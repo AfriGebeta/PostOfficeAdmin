@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react'
 
 export type EmployeeUser = PostalUser & {
   branch: string
+  branchId: string
   isDriver: boolean
 }
 
