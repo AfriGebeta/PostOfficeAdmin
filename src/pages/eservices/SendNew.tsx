@@ -7,9 +7,23 @@ import { Button } from '@/components/custom/button'
 
 import React from 'react'
 import { SignUpForm } from './forms/user-auth-form'
+import { useAuth } from '@/hooks/authProvider'
+import { EService } from '.'
 
-export default function SendNew() {
+export default function SendNew({
+  setEServices,
+  eServices,
+}: {
+  setEServices: React.Dispatch<React.SetStateAction<EService[]>>
+  eServices: EService[]
+}) {
   const [showDialog, setShowDialog] = React.useState(false)
+  const { user } = useAuth()
+
+  const onSubmitCallback = (newEService: EService) => {
+    setEServices([...eServices, newEService])
+    setShowDialog(false)
+  }
   return (
     <>
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
@@ -21,13 +35,9 @@ export default function SendNew() {
             <h1 className='text-xl font-medium'>VirtualPo</h1>
           </div>
 
-          <div className='flex flex-col space-y-2 text-left'>
-            <p className='text-sm text-muted-foreground'>
-              Fill the form below 
-              to send package
-            </p>
-          </div>
-          <SignUpForm />
+          <h2 className='text-2xl font-bold tracking-tight'>Welcome back! {user?.firstName}</h2>
+        <p className='text-muted-foreground'>Create a new E-service provider with an api-key</p>
+      <SignUpForm onSubmitCallback={onSubmitCallback} />
         </DialogContent>
       </Dialog>
     </>

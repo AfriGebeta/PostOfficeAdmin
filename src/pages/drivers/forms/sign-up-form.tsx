@@ -1,10 +1,19 @@
-"use client"
+"use client";
 
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuRadioGroup,
+//   DropdownMenuRadioItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
 
-import { HTMLAttributes, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { HTMLAttributes, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import {
   Form,
   FormControl,
@@ -12,15 +21,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/custom/button'
-import { PasswordInput } from '@/components/custom/password-input'
-import { cn } from '@/lib/utils'
-import axios from 'axios'
-import { PostalUser } from '@/hooks/authProvider'
-import { toast } from '@/components/ui/use-toast'
-import { MapContainer, TileLayer, Marker,  Popup, } from 'react-leaflet';
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/custom/button';
+import { PasswordInput } from '@/components/custom/password-input';
+import { cn } from '@/lib/utils';
+import axios from 'axios';
+import { PostalUser } from '@/hooks/authProvider';
+import { toast } from '@/components/ui/use-toast';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -32,27 +41,28 @@ const icon = new L.Icon({
   iconAnchor: [12, 41],
 });
 
-
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {
-  onSubmitCallback: () => void,
-  isDriver: boolean
+  onSubmitCallback: () => void;
+  isDriver: boolean;
 }
 
 type Branch = {
-  id: string
-  name: string
+  id: string;
+  name: string;
   location: {
-    latitude: number
-    longitude: number
-  },
-}
+    latitude: number;
+    longitude: number;
+  };
+};
 
 const formSchema = z
   .object({
     name: z.string().min(1, { message: 'Please enter your name' }),
     phone: z
-    .string()
-    .min(1, { message: 'Please enter your phone' }).min(9, { message: 'Phone number is not valid' }).max(9, { message: 'Phone number is not valid' }),
+      .string()
+      .min(1, { message: 'Please enter your phone' })
+      .min(9, { message: 'Phone number is not valid' })
+      .max(9, { message: 'Phone number is not valid' }),
     password: z
       .string()
       .min(1, {
@@ -66,11 +76,10 @@ const formSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match.",
     path: ['confirmPassword'],
-  })
+  });
 
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,29 +88,34 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
       password: '',
       confirmPassword: '',
     },
-  })
-  const [branches, setBranches] = useState<Branch[]>([])
+  });
+
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredBranches, setFilteredBranches] = useState<Branch[]>([]);
+  const [_profile, setProfile] = useState<PostalUser | null>(null);
+  const [currentDriver, setCurrentDriver] = useState<PostalUser | null>(null);
+  const [_position, _setPosition] = useState("BASIC");
+  const [location, setLocation] = useState<string | null>(null);
+  const [_branchLocations, _setBranchLocations] = useState<{ id: string, name: string, location: { lat: number, lng: number } }[]>([]);
 
   const handleBranchFetch = async () => {
-    await axios(import.meta.env.VITE_API_URL + '/branch').then(res => {
-      setBranches(res.data as Branch[])
-    }).catch((err: unknown) => {
-      console.error(err)
+    try {
+      const res = await axios.get(import.meta.env.VITE_API_URL + '/branch');
+      setBranches(res.data as Branch[]);
+      setFilteredBranches(res.data as Branch[]); // Set filtered branches on load
+    } catch (err: unknown) {
+      console.error(err);
       toast({
         title: 'Something went wrong!',
         description: `Error: ${err}`,
-      })
-      return []
-    });
+      });
+    }
   };
 
-    const [ drivers ] = useState<PostalUser[]>([])
-    const [profile, setProfile] = useState<PostalUser | null>(null)
-    const [currentDriver, setCurrentDriver] = useState<PostalUser | null>(null)
-    const [position, _setPosition] = useState("BASIC")
-
-    const createProfile = async () => {
-      let fetchDrivers = await axios.post(import.meta.env.VITE_API_URL + '/profile/signup', {
+  const createProfile = async () => {
+    try {
+      const res = await axios.post(import.meta.env.VITE_API_URL + '/profile/signup', {
         firstName: form.getValues().name.split(' ')[0],
         lastName: form.getValues().name.split(' ')[1],
         phoneNumber: form.getValues().phone,
@@ -113,104 +127,71 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
             longitude: branches[0].location.longitude
           }
         }
-      }).then(res => {
-        setProfile(res.data)
-      }).catch((err: unknown) => {
-        console.error(err, "------------fails here.")
-        toast({
-          title: 'Something went wrong!',
-          description: `Error: ${err}`,
-        })
-        return []
       });
-      
-      console.log(fetchDrivers, "from drivers======", drivers);
-      
+      return res.data;
+    } catch (err: unknown) {
+      console.error(err, "------------fails here.");
+      toast({
+        title: 'Something went wrong!',
+        description: `Error: ${err}`,
+      });
+      return null;
     }
- 
-    
-    const createDriver = async () => {
-      console.log("snedning", location, profile?.id, position, props.isDriver)
-      let createDriver = await axios.post(import.meta.env.VITE_API_URL + '/employee', {
-        profileId: profile?.id,
+  };
+
+  const createDriver = async (profileId: string) => {
+    try {
+      const res = await axios.post(import.meta.env.VITE_API_URL + '/employee', {
+        profileId,
         branchId: location,
         isDriver: props.isDriver,
         permissionLevel: PermissionLevel.Employee
-      }).then(res => {
-        setCurrentDriver(res.data)
-      }).catch((err: unknown) => {
-        console.error(err)
-        toast({
-          title: 'Something went wrong!',
-          description: `Error: ${err}`,
-        })
-        return []
       });
-      
-      console.log(createDriver, "from drivers======", drivers);
-      
+      setCurrentDriver(res.data);
+    } catch (err: unknown) {
+      console.error(err);
+      toast({
+        title: 'Something went wrong!',
+        description: `Error: ${err}`,
+      });
+    }
+  };
+
+  const onSubmit = async (_data: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    await handleBranchFetch();
+
+    const newProfile = await createProfile();
+    if (newProfile) {
+      setProfile(newProfile);
+      await createDriver(newProfile.id);
     }
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    setIsLoading(true)
-    console.log(data)
-
-    setTimeout(() => {
-      setIsLoading(false)
-      handleBranchFetch()
-    }, 3000)
-  }
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    if(branches.length > 0) {
-      createProfile()
-    }
-  }, [branches])
+    handleBranchFetch(); // Ensure branches are fetched on load
+  }, []);
 
   useEffect(() => {
-    if(profile) {
-      createDriver()
+    if (currentDriver) {
+      props.onSubmitCallback();
     }
-  }, [profile])
+  }, [currentDriver]);
 
   useEffect(() => {
-    if(currentDriver) {
-      props.onSubmitCallback()
-    }
-  }, [currentDriver])
+    const filtered = branches.filter(branch =>
+      branch.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredBranches(filtered);
+  }, [searchQuery, branches]);
 
   enum PermissionLevel {
-    //  Basic="BASIC",
-     Employee="LEMAJ",
-     Manager="LIMDYALEW",
-     Admin="MASTER",
-    //  Admin="OWNER",
-    }
-// /-------------
-
-const [location, setLocation] = useState<string | null>(null);
-
-const [branchLocations, setBranchLocations] = useState<{id: string, name: string, location: {lat: number, lng: number}}[]>([]);
-const getBranches = async () => {
-try {
-  const res = await axios.get('https://postoffice.gebeta.app/branch');
-  console.log(res.data, "branches----------");
-  res.data.forEach((branch: any) => {
-    const newBranches = branchLocations;
-    newBranches.push({id: branch.id, name: branch.name, location: {lat: branch.location.latitude, lng: branch.location.longitude}});
-    console.log({newBranches});
-    setBranchLocations(newBranches);
-  });
-} catch (error) {
-  console.error(error);
-}
-};
-
-
-
-useEffect(() => {
-getBranches();
-}, []);
+    Employee = "LEMAJ",
+    Manager = "LIMDYALEW",
+    Admin = "MASTER",
+  }
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -232,7 +213,7 @@ getBranches();
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name='name'
               render={({ field }) => (
@@ -272,24 +253,30 @@ getBranches();
               )}
             />
             {/* <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Select Employee Permission Level</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Permission Level</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-          {
-            Object.keys(PermissionLevel).map((permissionLevel) => (
-              <DropdownMenuRadioItem key={permissionLevel} value={permissionLevel}>
-                {permissionLevel}
-              </DropdownMenuRadioItem>
-            ))
-          }
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu> */}
-    <div className='space-y-1'>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">Select Employee Permission Level</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>Permission Level</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+                  {Object.keys(PermissionLevel).map((permissionLevel) => (
+                    <DropdownMenuRadioItem key={permissionLevel} value={permissionLevel}>
+                      {permissionLevel}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu> */}
+            <div className='space-y-1'>
+              <FormLabel>Search Branch</FormLabel>
+              <Input
+                placeholder='Search for a branch'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className='space-y-1'>
               <FormLabel>Select Location</FormLabel>
               <MapContainer
                 center={defaultLocation}
@@ -300,63 +287,28 @@ getBranches();
                   url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                   attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
-                
-                
-                {
-                  branchLocations.map((branch, index) => (
-                    <Marker key={index} position={branch.location} icon={icon}>
-                      <Popup className='flex flex-row justify-between gap-3'>
-                        <p>{branch.name}</p>
-                        <Button
-                          onClick={() => {
-                            console.log(branch.id, "branch id");
-                            setLocation(branch.id);
-                          }} className='mt-2' loading={isLoading}>Select</Button>
-                      </Popup>
-                    </Marker>
-                  ))
-                }
-                {/* <CurrentLocationButton /> */}
+                {filteredBranches.map((branch, index) => (
+                  <Marker key={index} position={{ lat: branch.location.latitude, lng: branch.location.longitude }} icon={icon}>
+                    <Popup className='flex flex-row justify-between gap-3'>
+                      <p>{branch.name}</p>
+                      <Button
+                        onClick={() => setLocation(branch.id)}
+                        className='mt-2'
+                        loading={isLoading}
+                      >
+                        Select
+                      </Button>
+                    </Popup>
+                  </Marker>
+                ))}
               </MapContainer>
             </div>
-            <Button className='mt-2' loading={isLoading}>
+            <Button className='mt-2' loading={isLoading} type="submit">
               Create Account
             </Button>
-
-            {/* <div className='relative my-2'>
-              <div className='absolute inset-0 flex items-center'>
-                <span className='w-full border-t' />
-              </div>
-              <div className='relative flex justify-center text-xs uppercase'>
-                <span className='bg-background px-2 text-muted-foreground'>
-                  Or continue with
-                </span>
-              </div>
-            </div> */}
-
-            {/* <div className='flex items-center gap-2'>
-              <Button
-                variant='outline'
-                className='w-full'
-                type='button'
-                loading={isLoading}
-                leftSection={<IconBrandGithub className='h-4 w-4' />}
-              >
-                GitHub
-              </Button>
-              <Button
-                variant='outline'
-                className='w-full'
-                type='button'
-                loading={isLoading}
-                leftSection={<IconBrandFacebook className='h-4 w-4' />}
-              >
-                Facebook
-              </Button>
-            </div> */}
           </div>
         </form>
       </Form>
     </div>
-  )
+  );
 }

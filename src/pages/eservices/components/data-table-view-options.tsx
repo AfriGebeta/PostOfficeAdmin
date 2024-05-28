@@ -11,19 +11,25 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 import SendNew from '../SendNew'
-import BullkUpload from '../BulkUpload'
+import { Dispatch, SetStateAction } from 'react'
+import { EService } from '..'
+// import BullkUpload from '../BulkUpload'
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
+  setData: React.Dispatch<React.SetStateAction<TData[]>>
+  data: TData[]
 }
 
 export function DataTableViewOptions<TData>({
   table,
+  setData,
+  data
 }: DataTableViewOptionsProps<TData>) {
   return (
     <div className='flex flex-row gap-4 items-center'>
-      <SendNew />
-      <BullkUpload />
+      <SendNew setEServices={setData as Dispatch<SetStateAction<EService[]>>} eServices={data as EService[]}/>
+      {/* <BullkUpload /> */}
       <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button

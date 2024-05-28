@@ -1,14 +1,14 @@
 "use client"
  
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuRadioGroup,
+//   DropdownMenuRadioItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu"
 
 import { HTMLAttributes, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -29,17 +29,17 @@ import { cn } from '@/lib/utils'
 import axios from 'axios'
 import { PostalUser } from '@/hooks/authProvider'
 import { toast } from '@/components/ui/use-toast'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+// import { MapContainer, TileLayer, Marker, Popup, } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+// import L from 'leaflet';
 
-const defaultLocation = { lat: 9.145, lng: 40.4897 }; // Ethiopia's coordinates
+// const defaultLocation = { lat: 9.145, lng: 40.4897 }; // Ethiopia's coordinates
 
-const icon = new L.Icon({
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
+// const icon = new L.Icon({
+//   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+//   iconSize: [25, 41],
+//   iconAnchor: [12, 41],
+// });
 
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {
@@ -107,7 +107,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     const [ drivers ] = useState<PostalUser[]>([])
     const [profile, setProfile] = useState<PostalUser | null>(null)
     const [currentDriver, setCurrentDriver] = useState<PostalUser | null>(null)
-    const [position, setPosition] = useState("BASIC")
+    const [position, _setPosition] = useState("BASIC")
 
     const createProfile = async () => {
       let fetchDrivers = await axios.post(import.meta.env.VITE_API_URL + '/profile/signup', {
@@ -139,6 +139,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
  
     
     const createDriver = async () => {
+      console.log("snedning", location, profile?.id, position, props.isDriver)
       let createDriver = await axios.post(import.meta.env.VITE_API_URL + '/employee', {
         profileId: profile?.id,
         branchId: location,
@@ -188,21 +189,21 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
   }, [currentDriver])
 
   enum PermissionLevel {
-    //  Basic="BASIC",
-     Employee="LEMAJ",
-     Manager="LIMDYALEW",
-     Admin="MASTER",
-    //  Admin="OWNER",
-    }
+  //  Basic="BASIC",
+   Employee="LEMAJ",
+   Manager="LIMDYALEW",
+   Admin="MASTER",
+  //  Admin="OWNER",
+  }
 // /-------------
 
-const [location, setLocation] = useState<string | null>(null);
 
-const [branchLocations, setBranchLocations] = useState<{name: string, location: {lat: number, lng: number}, id: string}[]>([]);
+const [branchLocations, setBranchLocations] = useState<{id: string, name: string, location: {lat: number, lng: number}}[]>([]);
+const [location, _setLocation] = useState<string | null>(branchLocations[0]?.id);
 const getBranches = async () => {
 try {
   const res = await axios.get('https://postoffice.gebeta.app/branch');
-  console.log(res.data);
+  console.log(res.data, "branches----------");
   res.data.forEach((branch: any) => {
     const newBranches = branchLocations;
     newBranches.push({id: branch.id, name: branch.name, location: {lat: branch.location.latitude, lng: branch.location.longitude}});
@@ -213,6 +214,7 @@ try {
   console.error(error);
 }
 };
+
 
 
 useEffect(() => {
@@ -278,7 +280,7 @@ getBranches();
                 </FormItem>
               )}
             />
-            <DropdownMenu>
+            {/* <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Select Employee Permission Level</Button>
       </DropdownMenuTrigger>
@@ -295,33 +297,10 @@ getBranches();
           }
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
-    </DropdownMenu>
+    </DropdownMenu> */}
     <div className='space-y-1'>
-              <FormLabel>Select Location</FormLabel>
-              <MapContainer
-                center={defaultLocation}
-                zoom={6}
-                style={{ height: '300px', width: '100%' }}
-              >
-                <TileLayer
-                  url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                />
-                
-                {
-                  branchLocations.map((branch, index) => (
-                    <Marker key={index} position={branch.location} icon={icon}>
-                      <Popup className='flex flex-row justify-between gap-3'>
-                        <p>{branch.name}</p>
-                        <Button
-                          onClick={() => {
-                            setLocation(branch.id);
-                          }} className='mt-2' loading={isLoading}>Select</Button>
-                      </Popup>
-                    </Marker>
-                  ))
-                }
-              </MapContainer>
+              {/* <FormLabel>Select Location</FormLabel> */}
+              
             </div>
             <Button className='mt-2' loading={isLoading}>
               Create Account

@@ -57,6 +57,7 @@ export const columns: ColumnDef<Branch>[] = [
    cell: ({ row }) => {
     const [isLoading, setIsLoading] = useState(false)
     const handleBranchDelete = () => {
+      console.log(row.original.id, "from delete");
       //@ts-ignore
       axios.delete(import.meta.env.VITE_API_URL + "/branch?id=" + row.original.id).then(res => {
         console.log(res.data, "from delete");

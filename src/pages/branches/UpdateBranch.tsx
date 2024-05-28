@@ -25,6 +25,7 @@ export default function UpdateBranch({showDialog, setShowDialog}: {showDialog: B
     })
 
     setShowDialog(false)
+    window.location.reload()
   }
   return (
     <>
