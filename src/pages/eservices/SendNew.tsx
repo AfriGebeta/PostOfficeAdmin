@@ -6,7 +6,7 @@ import {
 import { Button } from '@/components/custom/button'
 
 import React from 'react'
-import { UserAuthForm } from './forms/user-auth-form'
+import { SignUpForm } from './forms/user-auth-form'
 
 export default function SendNew() {
   const [showDialog, setShowDialog] = React.useState(false)
@@ -27,7 +27,7 @@ export default function SendNew() {
               to send package
             </p>
           </div>
-          <UserAuthForm />
+          <SignUpForm />
         </DialogContent>
       </Dialog>
     </>

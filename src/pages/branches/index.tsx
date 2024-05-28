@@ -28,6 +28,7 @@ export default function Branches() {
   const [ branches, setBranches ] = useState<Branch[]>([])
   const defaultLocation = { lat: 9.145, lng: 40.4897 }; // Ethiopia's coordinates
   const [updating, setUpdating] = useState<Branch>();
+  const [creating, setCreating] = useState<boolean>(false);
 
   const icon = new L.Icon({
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -67,6 +68,7 @@ export default function Branches() {
   }
 
   useEffect(() => {
+    console.log(updating, creating)
     handleTaskFetch()
   }, [])
 
@@ -98,11 +100,11 @@ export default function Branches() {
           </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
-          <DataTable data={branches} columns={columns} />
+          <DataTable data={branches} columns={columns} setCreating={setCreating}/>
         </div>
         <div className='flex justify-end flex-col p-4 gap-3'>
           <p>View Branches on map...</p>
-        {!updating && <MapContainer
+        {(!updating && !creating) && <MapContainer
                 center={defaultLocation}
                 zoom={6}
                 style={{ height: '600px', width: '100%' }}

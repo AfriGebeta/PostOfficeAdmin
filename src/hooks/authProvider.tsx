@@ -1,3 +1,4 @@
+import { EmployeeUser } from "@/pages/drivers";
 import axios from "axios";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
@@ -18,6 +19,7 @@ export interface PostalUser {
   lastName: String;
   role: PostalUserRole;
   id: string;
+  Employee: EmployeeUser[];
 }
 
 // Define context type
@@ -34,6 +36,7 @@ interface AuthContextType {
   }) => Promise<PostalUser | null>;
   logout: () => Promise<void>;
   hasPostalUserRole: (PostalUserRole: PostalUserRole) => boolean;
+  branchId?: string;
 }
 
 // Initial context state
@@ -53,6 +56,7 @@ const AuthContext = createContext<AuthContextType>({
   }) => new Promise(() => {}),
   logout: () => new Promise(() => {}),
   hasPostalUserRole: () => false,
+  branchId: "",
 });
 
 // Custom hook to use AuthContext

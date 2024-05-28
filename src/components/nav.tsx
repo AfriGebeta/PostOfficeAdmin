@@ -76,7 +76,7 @@ export default function Nav({
           {links.map(renderLink)}
           <Card className='flex flex-row justify-evenly items-center p-4 m-4 md:hidden'>
           <Card className='flex flex-row items-center justify-start pr-4 gap-2'><ThemeSwitch /> Change theme</Card>
-          <Card className='flex flex-row items-center justify-start pr-4 gap-2'><UserNav /> {user?.firstName} {user?.lastName.slice(0, 1)}.</Card>
+          <Card className='flex flex-row items-center justify-start pr-4 gap-2'><UserNav /> {user?.firstName} </Card>
           </Card>
         </nav>
       </TooltipProvider>

@@ -73,15 +73,14 @@ export function AccountForm() {
     defaultValues,
   })
 
-  function onSubmit(data: AccountFormValues) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  function onSubmit(_data: AccountFormValues) {
+    setTimeout(() => {
+      toast({
+        title: 'Employee updated!',
+        description: `Employee ${form.getValues().name} has been updated.`,
+      })
+      window.location.reload();
+    }, 3000)
   }
 
   return (
