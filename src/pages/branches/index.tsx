@@ -40,12 +40,12 @@ export default function Branches() {
   const getBranches = async () => {
     try {
       const res = await axios.get('https://postoffice.gebeta.app/branch');
-      console.log(res.data);
+      console.log(res.data, "data branches");
       res.data.forEach((branch: any) => {
         const newBranches = branchLocations;
         newBranches.push({ name: branch.name, location: { latitude: branch.location.latitude, longitude: branch.location.longitude }, mainOffice: branch.mainOffice, id: branch.id});
-        console.log({ newBranches });
-        setBranchLocations(newBranches);
+        // console.log({ newBranches });
+        setBranchLocations([...newBranches]);
       });
     } catch (error) {
       console.error(error);
@@ -107,26 +107,23 @@ export default function Branches() {
         {(!updating && !creating) && <MapContainer
                 center={defaultLocation}
                 zoom={6}
-                style={{ height: '600px', width: '100%' }}
+                style={{ height: '300px', width: '100%' }}
               >
                 <TileLayer
                   url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
                   attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
-                {/* <LocationMarker setLocation={setLocation} /> */}
-                {
-                  branchLocations.map((branch, index) => (
-                    <Marker key={index} position={{lat:branch.location.latitude, lng: branch.location.longitude}} icon={icon}>
-                      <Popup className='flex flex-row justify-between gap-3'>
-                        <p>{branch.name}</p>
-                        <Button
-                          onClick={() => {
-                            setUpdating(branch);
-                          }} className='mt-2' >Update details</Button>
-                      </Popup>
-                    </Marker>
-                  ))
-                }
+                {branchLocations.map((branch, index) => (
+                  <Marker key={index} position={{ lat: branch.location.latitude, lng: branch.location.longitude }} icon={icon}>
+                    <Popup className='flex flex-row justify-between gap-3'>
+                      <p>{branch.name}</p>
+                      <Button
+                  onClick={() => {
+                    setUpdating(branch);
+                  }} className='mt-2' >Update details</Button>
+                    </Popup>
+                  </Marker>
+                ))}
               </MapContainer>}
         </div>
         {updating && <UpdateBranch showDialog={updating} setShowDialog={setUpdating}/>}
