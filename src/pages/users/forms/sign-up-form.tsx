@@ -19,6 +19,11 @@ import { cn } from '@/lib/utils'
 import axios from 'axios'
 import { PostalUser } from '@/hooks/authProvider'
 import { toast } from '@/components/ui/use-toast'
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
+
+
+import { useMap, useMapEvents } from "react-leaflet"
+import L from 'leaflet'
 
 interface SignUpFormProps extends HTMLAttributes<HTMLDivElement> {
   onSubmitCallback: () => void,
@@ -82,6 +87,12 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     });
   };
 
+  const icon = new L.Icon({
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  });
+  
     const [ drivers ] = useState<PostalUser[]>([])
     const [_profile, setProfile] = useState<PostalUser | null>(null)
 
@@ -136,6 +147,71 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
   }, [branches])
 
 
+  const [location, setLocation] = useState<{ lat: number; lng: number }>({ lat: 0.0, lng: 0.0 });
+
+  function CurrentLocationButton() {
+    const map = useMap();
+
+    const handleClick = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const latlng = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          map.setView(latlng, 13); // Adjust zoom level as needed
+          L.marker(latlng, { icon }).addTo(map);
+          setLocation(latlng);
+        }, (error) => {
+          console.error(error);
+          toast({
+            title: 'Geolocation Error',
+            description: 'Unable to retrieve your location.',
+          });
+        });
+      } else {
+        toast({
+          title: 'Geolocation Not Supported',
+          description: 'Your browser does not support geolocation.',
+        });
+      }
+    };
+
+    useEffect(() => {
+      const control = new L.Control({ position: 'bottomright' });
+
+      control.onAdd = () => {
+        const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+        const button = L.DomUtil.create('button', '', div);
+        button.innerHTML = 'Use Current Location';
+        button.style.backgroundColor = 'white';
+        button.style.border = '2px solid rgba(0,0,0,0.2)';
+        button.style.cursor = 'pointer';
+        button.style.padding = '5px';
+        button.onclick = handleClick;
+        return div;
+      };
+
+      control.addTo(map);
+
+      return () => {
+        control.remove();
+      };
+    }, [map]);
+
+    return null;
+  }
+  function LocationMarker({ setLocation }: { setLocation: (location: { lat: number; lng: number }) => void }) {
+    useMapEvents({
+      click(e) {
+        setLocation(e.latlng);
+      },
+    });
+    return null;
+  }
+
+
+  const defaultLocation = { lat: 9.145, lng: 40.4897 }; // Ethiopia's coordinates
   return (
     <div className={cn('grid gap-6', className)} {...props}>
       <Form {...form}>
@@ -195,6 +271,19 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 </FormItem>
               )}
             />
+            <MapContainer
+                center={defaultLocation}
+                zoom={6}
+                style={{ height: '300px', width: '100%' }}
+              >
+                <TileLayer
+                  url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                />
+                {location && <Marker position={location} icon={icon} />}
+                <LocationMarker setLocation={setLocation} />
+                <CurrentLocationButton />
+              </MapContainer>
             <Button className='mt-2' loading={isLoading}>
               Create Account
             </Button>
