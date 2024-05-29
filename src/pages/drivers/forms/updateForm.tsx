@@ -1,14 +1,14 @@
 "use client"
  
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuRadioGroup,
+//   DropdownMenuRadioItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu"
 
 import { HTMLAttributes, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -83,7 +83,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     const [ drivers ] = useState<PostalUser[]>([])
     const [profile, setProfile] = useState<PostalUser | null>(null)
     const [currentDriver, setCurrentDriver] = useState<PostalUser | null>(null)
-    const [position, setPosition] = useState("BASIC")
+    const [_position, _setPosition] = useState("BASIC")
 
     const createProfile = async () => {
       let fetchDrivers = await axios.post(import.meta.env.VITE_API_URL + '/profile/signup', {
@@ -119,7 +119,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         profileId: profile?.id,
         branchId: branches[0].id,
         isDriver: props.isDriver,
-        permissionLevel: PermissionLevel[position as keyof typeof PermissionLevel]
+        permissionLevel: "BASIC"
       }).then(res => {
         setCurrentDriver(res.data)
       }).catch((err: unknown) => {
@@ -165,13 +165,13 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
     }
   }, [currentDriver])
 
-  enum PermissionLevel {
-    //  Basic="BASIC",
-     Employee="LEMAJ",
-     Manager="LIMDYALEW",
-     Admin="MASTER",
-    //  Admin="OWNER",
-    }
+  // enum PermissionLevel {
+  //   //  Basic="BASIC",
+  //    Employee="LEMAJ",
+  //    Manager="LIMDYALEW",
+  //    Admin="MASTER",
+  //   //  Admin="OWNER",
+  //   }
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -232,7 +232,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
                 </FormItem>
               )}
             />
-            <DropdownMenu>
+            {/* <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Select Employee Permission Level</Button>
       </DropdownMenuTrigger>
@@ -249,7 +249,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
           }
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
-    </DropdownMenu>
+    </DropdownMenu> */}
             <Button className='mt-2' loading={isLoading}>
               Update
             </Button>

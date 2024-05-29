@@ -121,6 +121,8 @@ export function SignUpForm({ className, onSubmitCallback, ...props }: SignUpForm
     return null;
   }
 
+  const [searchQuery, setSearchQuery] = useState('');
+
   function CurrentLocationButton() {
     const map = useMap();
 
@@ -178,6 +180,13 @@ export function SignUpForm({ className, onSubmitCallback, ...props }: SignUpForm
     handleBranchFetch();
   }, []);
 
+  useEffect(() => {
+    const filtered = branches.filter(branch =>
+      branch.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setBranches(filtered);
+  }, [searchQuery, branches]);
+
   const onSubmit = async (_data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     await createLocation();
@@ -203,6 +212,14 @@ export function SignUpForm({ className, onSubmitCallback, ...props }: SignUpForm
                 </FormItem>
               )}
             />
+            <div className='space-y-1'>
+              <FormLabel>Search Branch</FormLabel>
+              <Input
+                placeholder='Search for a branch'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
             <div className='space-y-1'>
               <FormLabel>Select Location</FormLabel>
               <div style={{ height: '300px', position: 'relative' }}>
