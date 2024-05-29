@@ -104,7 +104,8 @@ export default function Branches() {
         </div>
         <div className='flex justify-end flex-col p-4 gap-3'>
           <p>View Branches on map...</p>
-        {(!updating && !creating) && <MapContainer
+        {(!updating && !creating) && 
+        <MapContainer
                 center={defaultLocation}
                 zoom={6}
                 style={{ height: '300px', width: '100%' }}
